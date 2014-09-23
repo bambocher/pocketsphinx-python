@@ -1,0 +1,21 @@
+recursive-include sphinxbase/include *.h
+recursive-include sphinxbase/src *.c
+recursive-include sphinxbase/src *.h
+recursive-include sphinxbase/swig *.i
+prune sphinxbase/include/s60
+prune sphinxbase/include/wince
+prune sphinxbase/include/android
+prune sphinxbase/src/sphinx_adtools
+prune sphinxbase/src/sphinx_cepview
+prune sphinxbase/src/sphinx_fe
+prune sphinxbase/src/sphinx_jsgf2fsg
+prune sphinxbase/src/sphinx_lmtools
+exclude sphinxbase/swig/python/sphinxbase.py
+recursive-include pocketsphinx/include *.h
+recursive-include pocketsphinx/src *.c
+recursive-include pocketsphinx/src *.h
+recursive-include pocketsphinx/swig *.i
+prune pocketsphinx/src/gst-plugin
+prune pocketsphinx/src/programs
+exclude pocketsphinx/swig/python/pocketsphinx.py
+readme.md
