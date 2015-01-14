@@ -1,3 +1,5 @@
+prune build
+prune dist
 recursive-include sphinxbase/include *.h
 recursive-include sphinxbase/src *.c
 recursive-include sphinxbase/src *.h
@@ -11,6 +13,7 @@ prune sphinxbase/src/sphinx_fe
 prune sphinxbase/src/sphinx_jsgf2fsg
 prune sphinxbase/src/sphinx_lmtools
 exclude sphinxbase/swig/python/sphinxbase.py
+exclude sphinxbase/swig/sphinxbase_wrap.c
 recursive-include pocketsphinx/include *.h
 recursive-include pocketsphinx/src *.c
 recursive-include pocketsphinx/src *.h
@@ -18,4 +21,5 @@ recursive-include pocketsphinx/swig *.i
 prune pocketsphinx/src/gst-plugin
 prune pocketsphinx/src/programs
 exclude pocketsphinx/swig/python/pocketsphinx.py
+exclude pocketsphinx/swig/pocketsphinx_wrap.c
 include readme.md
