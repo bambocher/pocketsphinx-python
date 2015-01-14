@@ -2,6 +2,7 @@
 # encoding: utf-8
 import os
 import sys
+import codecs
 from glob import glob
 try:
     from setuptools import setup, Extension
@@ -63,7 +64,8 @@ class Install(install):
 
 
 def read(filename):
-    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+    with codecs.open(os.path.join(os.path.dirname(__file__), filename), encoding='utf-8') as f:
+        return f.read()
 
 
 setup(
