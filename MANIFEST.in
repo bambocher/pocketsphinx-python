@@ -18,4 +18,4 @@ recursive-include pocketsphinx/swig *.i
 prune pocketsphinx/src/gst-plugin
 prune pocketsphinx/src/programs
 exclude pocketsphinx/swig/python/pocketsphinx.py
-readme.md
+include readme.md
