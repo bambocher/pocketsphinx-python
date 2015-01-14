@@ -8,3 +8,4 @@ pocketsphinx/swig/pocketsphinx_wrap.c
 pocketsphinx/swig/python/pocketsphinx.py
 *.pyd
 *.egg-info
+*.so
