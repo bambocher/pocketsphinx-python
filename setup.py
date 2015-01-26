@@ -1,8 +1,36 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import os
+"""
+Supported Platforms
+-------------------
+
+- Windows 7
+- Windows 8
+
+Dependencies
+------------
+
+* `Python <https://www.python.org/downloads/>`_
+* `Swig <http://www.swig.org/download.html>`_
+* `Microsoft Visual C++ Compiler for Python 2.7 <http://aka.ms/vcpython27>`_
+
+Install
+-------
+
+.. code:: bash
+
+    pip install PyPocketSphinx
+
+or
+--
+
+.. code:: bash
+
+    git clone https://github.com/bambocher/PyPocketSphinx.git
+    cd PyPocketSphinx
+    python setup.py install
+"""
 import sys
-import codecs
 from glob import glob
 try:
     from setuptools import setup, Extension
@@ -104,17 +132,11 @@ class Install(install):
         install.run(self)
 
 
-def read(filename):
-    filepath = os.path.join(os.path.dirname(__file__), filename)
-    with codecs.open(filepath, encoding='utf-8') as f:
-        return f.read()
-
-
 setup(
     name='PyPocketSphinx',
-    version='12608.1',
+    version='12608.5',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
-    long_description=read('readme.md'),
+    long_description=__doc__,
     author='Dmitry Prazdnichnov',
     author_email='dp@bambucha.org',
     maintainer='',
