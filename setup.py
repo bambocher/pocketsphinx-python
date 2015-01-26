@@ -112,7 +112,7 @@ def read(filename):
 
 setup(
     name='PyPocketSphinx',
-    version='12608',
+    version='12608.1',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=read('readme.md'),
     author='Dmitry Prazdnichnov',
