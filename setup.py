@@ -51,7 +51,7 @@ elif sys.platform.startswith('win'):
     definitions.extend([
         ('WIN32', None),
         ('_WINDOWS', None),
-        ('YY_NO_UNISTD_H', None)
+        ('YY_NO_UNISTD_H', None),
         ('AD_BACKEND_WIN32', None)
     ])
 elif sys.platform.startswith('darwin'):
