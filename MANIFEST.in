@@ -23,3 +23,4 @@ prune pocketsphinx/src/programs
 exclude pocketsphinx/swig/python/pocketsphinx.py
 exclude pocketsphinx/swig/pocketsphinx_wrap.c
 include readme.md
+recursive-include include *.h
