@@ -43,17 +43,19 @@ Install on Ubuntu
 - python-pip
 - build-essential
 - swig
+- git
 
 ### Install
 
 ```bash
-sudo apt-get install -y python python-dev python-pip build-essential swig
+sudo apt-get install -y python python-dev python-pip build-essential swig git
 sudo pip install pocketsphinx
 ```
 
 or
 
 ```bash
+sudo apt-get install -y python python-dev python-pip build-essential swig git
 git clone --recursive https://github.com/bambocher/pocketsphinx-python
 cd pocketsphinx-python
 sudo python setup.py install
