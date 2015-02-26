@@ -2,6 +2,10 @@
 build
 dist
 MANIFEST
+sphinxbase/swig/sphinxbase_wrap.c
+sphinxbase/swig/python/sphinxbase.py
+pocketsphinx/swig/pocketsphinx_wrap.c
+pocketsphinx/swig/python/pocketsphinx.py
 *.pyd
 *.egg-info
 *.so
