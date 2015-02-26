@@ -33,7 +33,34 @@ cd pocketsphinx-python
 python setup.py install
 ```
 
-### Import
+Install on Ubuntu
+-----------------
+
+### Dependencies
+
+- python
+- python-dev
+- python-pip
+- build-essential
+- swig
+
+### Install
+
+```bash
+sudo apt-get install -y python python-dev python-pip build-essential swig
+sudo pip install pocketsphinx
+```
+
+or
+
+```bash
+git clone --recursive https://github.com/bambocher/pocketsphinx-python
+cd pocketsphinx-python
+sudo python setup.py install
+```
+
+Import
+------
 
 ```python
 try:
