@@ -22,7 +22,7 @@ Install on Windows
 ### Install
 
 ```bash
-pip install PyPocketSphinx
+pip install pocketsphinx
 ```
 
 or

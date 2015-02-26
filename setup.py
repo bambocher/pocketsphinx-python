@@ -20,7 +20,7 @@ Install
 
 .. code:: bash
 
-    pip install PyPocketSphinx
+    pip install pocketsphinx
 
 or
 --
@@ -147,7 +147,7 @@ extra_compile_args = [
 ]
 
 setup(
-    name='pocketsphinx-python',
+    name='pocketsphinx',
     version='0.0.1',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
@@ -156,7 +156,7 @@ setup(
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
     url='https://github.com/bambocher/pocketsphinx-python',
-    download_url='https://pypi.python.org/pypi/PyPocketSphinx',
+    download_url='https://pypi.python.org/pypi/pocketsphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
         Extension(
@@ -188,7 +188,7 @@ setup(
         'Programming Language :: C'
     ],
     license='BSD',
-    keywords=['sphinxbase', 'pocketsphinx', 'PyPocketSphinx'],
+    keywords=['sphinxbase', 'pocketsphinx'],
     platforms=['Windows'],
     package_dir={
         'sphinxbase': 'sphinxbase/swig/python',
