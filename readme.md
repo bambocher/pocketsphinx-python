@@ -1,5 +1,5 @@
-PyPocketSphinx
-==============
+pocketsphinx-python
+===================
 
 Python interface to CMU SphinxBase and PocketSphinx libraries
 
