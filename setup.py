@@ -6,6 +6,7 @@ Supported Platforms
 
 - Windows 7
 - Windows 8
+- Ubuntu 14.10
 
 Dependencies
 ------------
@@ -29,6 +30,20 @@ or
     git clone https://github.com/bambocher/PyPocketSphinx.git
     cd PyPocketSphinx
     python setup.py install
+
+Import
+------
+
+.. code:: python
+
+    try:
+        # Python 2.x
+        from sphinxbase import Config
+        from pocketsphinx import Decoder
+    except ImportError:
+        # Python 3.x
+        from sphinxbase.sphinxbase import Config
+        from pocketsphinx.pocketsphinx import Decoder
 """
 import sys
 from glob import glob
@@ -42,6 +57,8 @@ except Extension as err:
     from distutils.command.build import build
     from distutils.command.install import install
 
+PY2 = sys.version_info[0] == 2
+
 libsphinxbase = (
     [s for s in glob('sphinxbase/src/libsphinxbase/lm/*.c') if 'lm3g_templates.c' not in s] +
     glob('sphinxbase/src/libsphinxbase/feat/*.c') +
@@ -53,12 +70,12 @@ libsphinxad = []
 
 libpocketsphinx = glob('pocketsphinx/src/libpocketsphinx/*.c')
 
-sb_headers = ['sphinxbase/include', 'sphinxbase/include/sphinxbase']
-ps_headers = ['pocketsphinx/include', 'sphinxbase/src/libpocketsphinx']
+sb_include_dirs = ['sphinxbase/include', 'sphinxbase/include/sphinxbase']
+ps_include_dirs = ['pocketsphinx/include']
 
 libraries = []
 
-definitions = [
+define_macros = [
     ('SPHINXBASE_EXPORTS', None),
     ('POCKETSPHINX_EXPORTS', None),
     ('HAVE_CONFIG_H', None),
@@ -68,29 +85,25 @@ definitions = [
 ]
 
 if sys.platform.startswith('linux'):
-    pass
+    libsphinxad.extend([
+        'sphinxbase/src/libsphinxad/ad_oss.c'
+    ])
+    sb_include_dirs.extend(['include'])
 elif sys.platform.startswith('win'):
     libsphinxad.extend([
-        'sphinxbase/src/libsphinxad/play_win32.c',
-        'sphinxbase/src/libsphinxad/rec_win32.c'
+        'sphinxbase/src/libsphinxad/ad_win32.c'
     ])
-    sb_headers.extend(['sphinxbase/include/win32'])
+    sb_include_dirs.extend(['sphinxbase/include/win32'])
     libraries.append('winmm')
-    definitions.extend([
+    define_macros.extend([
         ('WIN32', None),
         ('_WINDOWS', None),
-        ('YY_NO_UNISTD_H', None),
-        ('AD_BACKEND_WIN32', None)
+        ('YY_NO_UNISTD_H', None)
     ])
 elif sys.platform.startswith('darwin'):
     pass
-#elif sys.platform == 'cygwin':
-#    libraries.append('iconv')
 else:
-    definitions.extend([
-        ('AD_BACKEND_NONE', None)
-    ])
-
+    pass
 
 sb_sources = (
     libsphinxbase +
@@ -105,72 +118,77 @@ ps_sources = (
     ['pocketsphinx/swig/pocketsphinx.i']
 )
 
-sb_options = (
-    ['-modern'] +
-    ['-I' + h for h in sb_headers] +
+swig_opts = ['-modern']
+
+if not PY2:
+    swig_opts.append('-py3')
+
+sb_swig_opts = (
+    swig_opts +
+    ['-I' + h for h in sb_include_dirs] +
     ['-outdir', 'sphinxbase/swig/python']
 )
 
-ps_options = (
-    ['-modern'] +
-    ['-I' + h for h in sb_headers] +
-    ['-I' + h for h in ps_headers] +
+ps_swig_opts = (
+    swig_opts +
+    ['-I' + h for h in sb_include_dirs] +
+    ['-I' + h for h in ps_include_dirs] +
     ['-Isphinxbase/swig'] +
     ['-outdir', 'pocketsphinx/swig/python']
 )
 
-
-class Build(build):
-    def run(self):
-        self.run_command('build_ext')
-        build.run(self)
-
-
-class Install(install):
-    def run(self):
-        self.run_command('build_ext')
-        install.run(self)
-
+extra_compile_args = [
+    '-Wno-unused-label',
+    '-Wno-maybe-uninitialized',
+    '-Wno-parentheses',
+    '-Wno-unused-but-set-variable',
+    '-Wno-unused-variable',
+    '-Wno-unused-but-set-variable'
+]
 
 setup(
     name='PyPocketSphinx',
-    version='12608.5',
+    version='0.0.1',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
     author_email='dp@bambucha.org',
-    maintainer='',
-    maintainer_email='',
+    maintainer='Dmitry Prazdnichnov',
+    maintainer_email='dp@bambucha.org',
     url='https://github.com/bambocher/PyPocketSphinx',
-    download_url='',
+    download_url='https://pypi.python.org/pypi/PyPocketSphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
         Extension(
             name='sphinxbase._sphinxbase',
             sources=sb_sources,
-            swig_opts=sb_options,
-            include_dirs=sb_headers,
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs,
             libraries=libraries,
-            define_macros=definitions
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args
         ),
         Extension(
             name='pocketsphinx._pocketsphinx',
             sources=ps_sources,
-            swig_opts=ps_options,
-            include_dirs=sb_headers + ps_headers,
+            swig_opts=ps_swig_opts,
+            include_dirs=sb_include_dirs + ps_include_dirs,
             libraries=libraries,
-            define_macros=definitions
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args
         )
     ],
-    cmdclass={'build': Build, 'install': Install},
     classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
         'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: C'
     ],
     license='BSD',
-    keywords=['sphinxbase', 'pocketsphinx'],
+    keywords=['sphinxbase', 'pocketsphinx', 'PyPocketSphinx'],
     platforms=['Windows'],
     package_dir={
         'sphinxbase': 'sphinxbase/swig/python',

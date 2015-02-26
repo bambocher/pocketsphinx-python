@@ -8,6 +8,7 @@ Supported Platforms
 
 - Windows 7
 - Windows 8
+- Ubuntu 14.10
 
 Install on Windows
 ------------------
@@ -20,14 +21,27 @@ Install on Windows
 
 ### Install
 
-```
+```bash
 pip install PyPocketSphinx
 ```
 
 or
 
-```
-git clone https://github.com/bambocher/PyPocketSphinx.git
+```bash
+git clone --recursive https://github.com/bambocher/PyPocketSphinx.git
 cd PyPocketSphinx
 python setup.py install
+```
+
+### Import
+
+```python
+try:
+    # Python 2.x
+    from sphinxbase import Config
+    from pocketsphinx import Decoder
+except ImportError:
+    # Python 3.x
+    from sphinxbase.sphinxbase import Config
+    from pocketsphinx.pocketsphinx import Decoder
 ```
