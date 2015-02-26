@@ -28,8 +28,8 @@ pip install PyPocketSphinx
 or
 
 ```bash
-git clone --recursive https://github.com/bambocher/PyPocketSphinx.git
-cd PyPocketSphinx
+git clone --recursive https://github.com/bambocher/pocketsphinx-python
+cd pocketsphinx-python
 python setup.py install
 ```
 

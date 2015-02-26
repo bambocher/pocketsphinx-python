@@ -27,8 +27,8 @@ or
 
 .. code:: bash
 
-    git clone https://github.com/bambocher/PyPocketSphinx.git
-    cd PyPocketSphinx
+    git clone https://github.com/bambocher/pocketsphinx-python.git
+    cd pocketsphinx-python
     python setup.py install
 
 Import
@@ -147,7 +147,7 @@ extra_compile_args = [
 ]
 
 setup(
-    name='PyPocketSphinx',
+    name='pocketsphinx-python',
     version='0.0.1',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
@@ -155,7 +155,7 @@ setup(
     author_email='dp@bambucha.org',
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
-    url='https://github.com/bambocher/PyPocketSphinx',
+    url='https://github.com/bambocher/pocketsphinx-python',
     download_url='https://pypi.python.org/pypi/PyPocketSphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
