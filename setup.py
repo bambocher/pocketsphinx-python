@@ -84,11 +84,20 @@ define_macros = [
     ('SPHINXDLL', None)
 ]
 
+extra_compile_args = []
+
 if sys.platform.startswith('linux'):
     libsphinxad.extend([
         'sphinxbase/src/libsphinxad/ad_oss.c'
     ])
     sb_include_dirs.extend(['include'])
+    extra_compile_args.extend([
+        '-Wno-unused-label',
+        '-Wno-maybe-uninitialized',
+        '-Wno-parentheses',
+        '-Wno-unused-but-set-variable',
+        '-Wno-unused-variable'
+    ])
 elif sys.platform.startswith('win'):
     libsphinxad.extend([
         'sphinxbase/src/libsphinxad/ad_win32.c'
@@ -99,6 +108,11 @@ elif sys.platform.startswith('win'):
         ('WIN32', None),
         ('_WINDOWS', None),
         ('YY_NO_UNISTD_H', None)
+    ])
+    extra_compile_args.extend([
+        '/wd4244',
+        '/wd4090',
+        '/wd4018'
     ])
 elif sys.platform.startswith('darwin'):
     pass
@@ -136,15 +150,6 @@ ps_swig_opts = (
     ['-Isphinxbase/swig'] +
     ['-outdir', 'pocketsphinx/swig/python']
 )
-
-extra_compile_args = [
-    '-Wno-unused-label',
-    '-Wno-maybe-uninitialized',
-    '-Wno-parentheses',
-    '-Wno-unused-but-set-variable',
-    '-Wno-unused-variable',
-    '-Wno-unused-but-set-variable'
-]
 
 setup(
     name='pocketsphinx',
