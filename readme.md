@@ -16,6 +16,8 @@ Install on Windows
 ### Dependencies
 
 - [Python](https://www.python.org/downloads/)
+- [git](http://git-scm.com/downloads)
+- [pip](https://pypi.python.org/pypi/pip/)
 - [Swig](http://www.swig.org/download.html)
 - [Microsoft Visual C++ Compiler for Python 2.7](http://aka.ms/vcpython27)
 
