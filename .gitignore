@@ -2,8 +2,6 @@
 build
 dist
 MANIFEST
-sphinxbase
-pocketsphinx
 *.pyd
 *.egg-info
 *.so
