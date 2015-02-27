@@ -153,7 +153,7 @@ ps_swig_opts = (
 
 setup(
     name='pocketsphinx',
-    version='0.0.1',
+    version='0.0.3',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
