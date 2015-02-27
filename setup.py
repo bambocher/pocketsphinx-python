@@ -134,9 +134,6 @@ ps_sources = (
 
 swig_opts = ['-modern']
 
-if not PY2:
-    swig_opts.append('-py3')
-
 sb_swig_opts = (
     swig_opts +
     ['-I' + h for h in sb_include_dirs] +
@@ -153,7 +150,7 @@ ps_swig_opts = (
 
 setup(
     name='pocketsphinx',
-    version='0.0.3',
+    version='0.0.4',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
