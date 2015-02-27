@@ -111,6 +111,8 @@ elif sys.platform.startswith('win'):
     ])
     extra_compile_args.extend([
         '/wd4244',
+        '/wd4267',
+        '/wd4197',
         '/wd4090',
         '/wd4018'
     ])
