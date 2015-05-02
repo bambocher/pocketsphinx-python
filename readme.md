@@ -1,7 +1,12 @@
 pocketsphinx-python
 ===================
 
-Python interface to CMU SphinxBase and PocketSphinx libraries
+Python interface to CMU SphinxBase and PocketSphinx libraries created with SWIG.
+Pocketsphinx packages include python support, however, it is based on Automake and
+not well supported on Windows.
+
+This package provides module created with Python distutils setup and can be more
+portable.
 
 Supported Platforms
 -------------------
@@ -63,16 +68,35 @@ cd pocketsphinx-python
 sudo python setup.py install
 ```
 
-Import
-------
+Basic usage
+-----------
 
 ```python
-try:
-    # Python 2.x
-    from sphinxbase import Config
-    from pocketsphinx import Decoder
-except ImportError:
-    # Python 3.x
-    from sphinxbase.sphinxbase import Config
-    from pocketsphinx.pocketsphinx import Decoder
+from os import environ, path
+
+from pocketsphinx.pocketsphinx import *
+from sphinxbase.sphinxbase import *
+
+MODELDIR = "pocketsphinx/model"
+DATADIR = "pocketsphinx/test/data"
+
+# Create a decoder with certain model
+config = Decoder.default_config()
+config.set_string('-hmm', path.join(MODELDIR, 'en-us/en-us'))
+config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us.lm.dmp'))
+config.set_string('-dict', path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
+decoder = Decoder(config)
+
+# Decode streaming data.
+decoder = Decoder(config)
+decoder.start_utt()
+stream = open(path.join(DATADIR, 'goforward.raw'), 'rb')
+while True:
+  buf = stream.read(1024)
+  if buf:
+    decoder.process_raw(buf, False, False)
+  else:
+    break
+decoder.end_utt()
+print ('Best hypothesis segments: ', [seg.word for seg in decoder.seg()])
 ```

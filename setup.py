@@ -36,15 +36,10 @@ Import
 
 .. code:: python
 
-    try:
-        # Python 2.x
-        from sphinxbase import Config
-        from pocketsphinx import Decoder
-    except ImportError:
-        # Python 3.x
-        from sphinxbase.sphinxbase import Config
-        from pocketsphinx.pocketsphinx import Decoder
+from sphinxbase.sphinxbase import Config
+from pocketsphinx.pocketsphinx import Decoder
 """
+
 import sys
 from glob import glob
 try:
