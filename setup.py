@@ -55,13 +55,11 @@ except Extension as err:
 PY2 = sys.version_info[0] == 2
 
 libsphinxbase = (
-    [s for s in glob('sphinxbase/src/libsphinxbase/lm/*.c') if 'lm3g_templates.c' not in s] +
+    glob('sphinxbase/src/libsphinxbase/lm/*.c') +
     glob('sphinxbase/src/libsphinxbase/feat/*.c') +
     glob('sphinxbase/src/libsphinxbase/util/*.c') +
     glob('sphinxbase/src/libsphinxbase/fe/*.c')
 )
-
-libsphinxad = []
 
 libpocketsphinx = glob('pocketsphinx/src/libpocketsphinx/*.c')
 
@@ -82,9 +80,6 @@ define_macros = [
 extra_compile_args = []
 
 if sys.platform.startswith('linux'):
-    libsphinxad.extend([
-        'sphinxbase/src/libsphinxad/ad_oss.c'
-    ])
     sb_include_dirs.extend(['include'])
     extra_compile_args.extend([
         '-Wno-unused-label',
@@ -94,11 +89,7 @@ if sys.platform.startswith('linux'):
         '-Wno-unused-variable'
     ])
 elif sys.platform.startswith('win'):
-    libsphinxad.extend([
-        'sphinxbase/src/libsphinxad/ad_win32.c'
-    ])
     sb_include_dirs.extend(['sphinxbase/include/win32'])
-    libraries.append('winmm')
     define_macros.extend([
         ('WIN32', None),
         ('_WINDOWS', None),
@@ -112,19 +103,17 @@ elif sys.platform.startswith('win'):
         '/wd4018'
     ])
 elif sys.platform.startswith('darwin'):
-    pass
+    sb_include_dirs.extend(['include'])
 else:
     pass
 
 sb_sources = (
     libsphinxbase +
-    libsphinxad +
     ['sphinxbase/swig/sphinxbase.i']
 )
 
 ps_sources = (
     libsphinxbase +
-    libsphinxad +
     libpocketsphinx +
     ['pocketsphinx/swig/pocketsphinx.i']
 )
@@ -147,14 +136,14 @@ ps_swig_opts = (
 
 setup(
     name='pocketsphinx',
-    version='0.0.4',
+    version='0.0.5',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
     author_email='dp@bambucha.org',
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
-    url='https://github.com/bambocher/pocketsphinx-python',
+    url='https://github.com/cmusphinx/pocketsphinx-python',
     download_url='https://pypi.python.org/pypi/pocketsphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
