@@ -10,7 +10,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq build-essential swig
 install:
-  - pip install .
+  - python setup.py install --old-and-unmanageable
 script:
   - cd pocketsphinx/swig/python/test
   - python ./config_test.py
