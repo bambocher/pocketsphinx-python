@@ -88,10 +88,11 @@ if sys.platform.startswith('linux'):
     sb_include_dirs.extend(['include'])
     extra_compile_args.extend([
         '-Wno-unused-label',
-        '-Wno-maybe-uninitialized',
+        '-Wno-strict-prototypes',
         '-Wno-parentheses',
         '-Wno-unused-but-set-variable',
-        '-Wno-unused-variable'
+        '-Wno-unused-variable',
+        '-Wno-unused-result'
     ])
 elif sys.platform.startswith('win'):
     libsphinxad.extend([
