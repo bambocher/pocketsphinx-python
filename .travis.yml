@@ -10,7 +10,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq build-essential swig
 install:
-  - python setup.py install --old-and-unmanageable
+  - pip install .
 script:
   - cd pocketsphinx/swig/python/test
   - sed -i 's/sphinxbase.sphinxbase/sphinxbase/g; s/pocketsphinx.pocketsphinx/pocketsphinx/g' *
