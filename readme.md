@@ -77,8 +77,8 @@ Basic usage
 #!/usr/bin/env python
 from os import environ, path
 
-from pocketsphinx.pocketsphinx import *
-from sphinxbase.sphinxbase import *
+from pocketsphinx import *
+from sphinxbase import *
 
 MODELDIR = "pocketsphinx/model"
 DATADIR = "pocketsphinx/test/data"

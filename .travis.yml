@@ -12,6 +12,7 @@ before_install:
 install:
   - python setup.py install --old-and-unmanageable
 script:
+  - sed -i 's/sphinxbase.sphinxbase/sphinxbase/g; s/pocketsphinx.pocketsphinx/pocketsphinx/g' *
   - cd pocketsphinx/swig/python/test
   - python ./config_test.py
   - python ./decoder_test.py
