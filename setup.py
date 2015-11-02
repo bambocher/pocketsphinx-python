@@ -55,7 +55,7 @@ except Extension as err:
 PY2 = sys.version_info[0] == 2
 
 libsphinxbase = (
-    [s for s in glob('sphinxbase/src/libsphinxbase/lm/*.c') if 'lm3g_templates.c' not in s] +
+    glob('sphinxbase/src/libsphinxbase/lm/*.c') +
     glob('sphinxbase/src/libsphinxbase/feat/*.c') +
     glob('sphinxbase/src/libsphinxbase/util/*.c') +
     glob('sphinxbase/src/libsphinxbase/fe/*.c')
@@ -147,7 +147,7 @@ ps_swig_opts = (
 
 setup(
     name='pocketsphinx',
-    version='0.0.4',
+    version='0.0.5',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
