@@ -4,7 +4,6 @@ recursive-include sphinxbase/include *.h
 recursive-include sphinxbase/src *.c
 recursive-include sphinxbase/src *.h
 recursive-include sphinxbase/swig *.i
-prune sphinxbase/include/s60
 prune sphinxbase/include/wince
 prune sphinxbase/include/android
 prune sphinxbase/src/sphinx_adtools
