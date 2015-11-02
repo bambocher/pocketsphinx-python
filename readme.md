@@ -1,6 +1,8 @@
 pocketsphinx-python
 ===================
 
+[![Build Status](https://travis-ci.org/bambocher/pocketsphinx-python.svg?branch=master)](https://travis-ci.org/bambocher/pocketsphinx-python)
+
 Python interface to CMU SphinxBase and PocketSphinx libraries created with SWIG.
 Pocketsphinx packages include python support, however, it is based on Automake and
 not well supported on Windows.
