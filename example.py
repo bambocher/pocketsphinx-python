@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from os import environ, path
 
 from pocketsphinx.pocketsphinx import *

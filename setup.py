@@ -83,10 +83,11 @@ if sys.platform.startswith('linux'):
     sb_include_dirs.extend(['include'])
     extra_compile_args.extend([
         '-Wno-unused-label',
-        '-Wno-maybe-uninitialized',
+        '-Wno-strict-prototypes',
         '-Wno-parentheses',
         '-Wno-unused-but-set-variable',
-        '-Wno-unused-variable'
+        '-Wno-unused-variable',
+        '-Wno-unused-result'
     ])
 elif sys.platform.startswith('win'):
     sb_include_dirs.extend(['sphinxbase/include/win32'])
@@ -136,7 +137,7 @@ ps_swig_opts = (
 
 setup(
     name='pocketsphinx',
-    version='0.0.5',
+    version='0.0.8',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
     long_description=__doc__,
     author='Dmitry Prazdnichnov',
@@ -171,8 +172,14 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: C'
     ],
     license='BSD',
