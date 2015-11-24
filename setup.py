@@ -61,8 +61,6 @@ libsphinxbase = (
     glob('sphinxbase/src/libsphinxbase/fe/*.c')
 )
 
-libsphinxad = []
-
 libpocketsphinx = glob('pocketsphinx/src/libpocketsphinx/*.c')
 
 sb_include_dirs = ['sphinxbase/include', 'sphinxbase/include/sphinxbase']
@@ -82,9 +80,6 @@ define_macros = [
 extra_compile_args = []
 
 if sys.platform.startswith('linux'):
-    libsphinxad.extend([
-        'sphinxbase/src/libsphinxad/ad_oss.c'
-    ])
     sb_include_dirs.extend(['include'])
     extra_compile_args.extend([
         '-Wno-unused-label',
@@ -95,11 +90,7 @@ if sys.platform.startswith('linux'):
         '-Wno-unused-result'
     ])
 elif sys.platform.startswith('win'):
-    libsphinxad.extend([
-        'sphinxbase/src/libsphinxad/ad_win32.c'
-    ])
     sb_include_dirs.extend(['sphinxbase/include/win32'])
-    libraries.append('winmm')
     define_macros.extend([
         ('WIN32', None),
         ('_WINDOWS', None),
@@ -113,19 +104,17 @@ elif sys.platform.startswith('win'):
         '/wd4018'
     ])
 elif sys.platform.startswith('darwin'):
-    pass
+    sb_include_dirs.extend(['include'])
 else:
     pass
 
 sb_sources = (
     libsphinxbase +
-    libsphinxad +
     ['sphinxbase/swig/sphinxbase.i']
 )
 
 ps_sources = (
     libsphinxbase +
-    libsphinxad +
     libpocketsphinx +
     ['pocketsphinx/swig/pocketsphinx.i']
 )
@@ -155,7 +144,7 @@ setup(
     author_email='dp@bambucha.org',
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
-    url='https://github.com/bambocher/pocketsphinx-python',
+    url='https://github.com/cmusphinx/pocketsphinx-python',
     download_url='https://pypi.python.org/pypi/pocketsphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
