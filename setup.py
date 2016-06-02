@@ -87,7 +87,8 @@ if sys.platform.startswith('linux'):
         '-Wno-parentheses',
         '-Wno-unused-but-set-variable',
         '-Wno-unused-variable',
-        '-Wno-unused-result'
+        '-Wno-unused-result',
+        '-Wno-sign-compare'
     ])
 elif sys.platform.startswith('win'):
     sb_include_dirs.extend(['sphinxbase/include/win32'])
