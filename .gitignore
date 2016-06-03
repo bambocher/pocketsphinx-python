@@ -1,5 +1,6 @@
 .idea
-venv
+venv2
+venv3
 build
 dist
 MANIFEST
@@ -7,3 +8,6 @@ MANIFEST
 *.egg-info
 *.so
 __pycache__
+*.htk
+*.lat
+*.fsg

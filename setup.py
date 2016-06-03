@@ -174,7 +174,6 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
@@ -189,5 +188,6 @@ setup(
     package_dir={
         'sphinxbase': 'sphinxbase/swig/python',
         'pocketsphinx': 'pocketsphinx/swig/python'
-    }
+    },
+    test_suite='tests'
 )
