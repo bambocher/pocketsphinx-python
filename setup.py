@@ -43,7 +43,10 @@ if sys.platform.startswith('win'):
         '/wd4267',
         '/wd4197',
         '/wd4090',
-        '/wd4018'
+        '/wd4018',
+        '/wd4311',
+        '/wd4312',
+        '/wd4334'
     ])
 elif sys.platform.startswith('darwin'):
     sb_include_dirs.extend(['deps/sphinxbase/include/android'])

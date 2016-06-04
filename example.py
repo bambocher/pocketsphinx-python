@@ -12,7 +12,6 @@ config = ps.Decoder.default_config()
 config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
 config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
 config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-config.set_string('-logfn', '/dev/null')
 decoder = ps.Decoder(config)
 
 # Decode streaming data.

@@ -33,6 +33,7 @@ Supported Platforms
 
 * Windows 7
 * Windows 8
+* Windows 10
 * Ubuntu 14.04
 
 ===================
@@ -43,10 +44,10 @@ Install on Windows
 Requirements
 ------------
 
-* `Python <http://aka.ms/vcpython27>`__
-* `git <http://git-scm.com/downloads>`__
+* `Python <https://www.python.org/downloads>`__
+* `Git <http://git-scm.com/downloads>`__
 * `Swig <http://www.swig.org/download.html>`__
-* `Microsoft Visual C++ Compiler for Python 2.7 <http://aka.ms/vcpython27>`__
+* `Visual Studio Community <https://www.visualstudio.com/ru-ru/downloads/download-visual-studio-vs.aspx>`__
 
 -------
 Install
@@ -113,7 +114,6 @@ Basic usage
     config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
     config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
     config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-    config.set_string('-logfn', '/dev/null')
     decoder = ps.Decoder(config)
 
     # Decode streaming data.

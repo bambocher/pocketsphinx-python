@@ -15,7 +15,7 @@ class Jsgf(Decoder):
         jsgf = sb.Jsgf(os.path.join(self.data_path, 'goforward.gram'))
         rule = jsgf.get_rule('goforward.move2')
         fsg = jsgf.build_fsg(rule, self.decoder.get_logmath(), 7.5)
-        fsg.writefile('/dev/null')
+        fsg.writefile('goforward.fsg')
 
         self.decoder.set_fsg('goforward', fsg)
         self.decoder.set_search('goforward')
