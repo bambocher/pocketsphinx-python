@@ -22,8 +22,8 @@ PocketSphinx Python
     :target: https://pypi.python.org/pypi/pocketsphinx
     :alt: License
 
-Python interface to CMU SphinxBase and PocketSphinx libraries created with SWIG.
-Pocketsphinx packages include python support, however, it is based on Automake and not well supported on Windows.
+Python interface to CMU `SphinxBase <https://github.com/cmusphinx/sphinxbase>`__ and `PocketSphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with SWIG.
+PocketSphinx packages include python support, however, it is based on Automake and not well supported on Windows.
 
 This package provides module created with Python distutils setup and can be more portable.
 
