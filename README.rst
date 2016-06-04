@@ -129,6 +129,12 @@ Basic usage
     stream.close()
     print('Best hypothesis segments:', [seg.word for seg in decoder.seg()])
 
+==================================
+Projects using pocketsphinx-python
+==================================
+
+* `SpeechRecognition <https://github.com/Uberi/speech_recognition>`__ - Library for performing speech recognition, with support for several engines and APIs, online and offline.
+
 =======
 License
 =======
