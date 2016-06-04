@@ -1,5 +1,5 @@
 *******************
-PocketSphinx Python
+Pocketsphinx Python
 *******************
 
 .. image:: https://img.shields.io/pypi/v/pocketsphinx.svg
@@ -22,8 +22,9 @@ PocketSphinx Python
     :target: https://pypi.python.org/pypi/pocketsphinx
     :alt: License
 
-Python interface to CMU `SphinxBase <https://github.com/cmusphinx/sphinxbase>`__ and `PocketSphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with SWIG.
-PocketSphinx packages include python support, however, it is based on Automake and not well supported on Windows.
+Python interface to CMU `Sphinxbase <https://github.com/cmusphinx/sphinxbase>`__ and `Pocketsphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with `SWIG <http://www.swig.org>`__.
+Pocketsphinx packages include python support, however, it is based on Automake and not well supported on Windows.
+Pocketsphinx is part of the `CMU Sphinx <http://cmusphinx.sourceforge.net>`__ Open Source Toolkit For Speech Recognition.
 
 This package provides module created with Python distutils setup and can be more portable.
 
