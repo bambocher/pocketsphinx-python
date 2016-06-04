@@ -44,7 +44,7 @@ Install on Windows
 Requirements
 ------------
 
-* `Python <http://aka.ms/vcpython27>`__
+* `Python <https://www.python.org/downloads>`__
 * `git <http://git-scm.com/downloads>`__
 * `Swig <http://www.swig.org/download.html>`__
 * `Microsoft Visual C++ Compiler for Python 2.7 <http://aka.ms/vcpython27>`__
