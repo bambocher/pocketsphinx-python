@@ -8,7 +8,7 @@ import pocketsphinx as ps
 class Decoder(object):
 
     def __init__(self, hmm_path=None, lm_path=None, dict_path=None, lm_load=True,
-                 logfn='/dev/null', keyphrase=None, kws_threshold=None, mmap=None):
+                 keyphrase=None, kws_threshold=None, mmap=None):
         self.hmm_path = hmm_path
         self.lm_path = lm_path
         self.dict_path = dict_path
@@ -21,7 +21,6 @@ class Decoder(object):
         self.config.set_string('-hmm', self.hmm_path or os.path.join(self.model_path, 'en-us/en-us'))
         self.config.set_string('-lm', self.lm_path or os.path.join(self.model_path, 'en-us/en-us.lm.bin')) if lm_load else None
         self.config.set_string('-dict', self.dict_path or os.path.join(self.model_path, 'en-us/cmudict-en-us.dict'))
-        self.config.set_string('-logfn', logfn)
         self.config.set_string('-keyphrase', keyphrase) if keyphrase else None
         self.config.set_float('-kws_threshold', kws_threshold) if kws_threshold else None
         self.config.set_boolean('-mmap', mmap) if mmap else None

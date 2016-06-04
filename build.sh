@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 rm -rf venv2 venv3 build dist pocketsphinx.egg-info
+rm -rf goforward.fsg goforward.htk goforward.lat
 rm -rf sphinxbase/sphinxbase.py sphinxbase/*.so
 rm -rf pocketsphinx/pocketsphinx.py pocketsphinx/*.so
 
