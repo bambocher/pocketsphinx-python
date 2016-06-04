@@ -1,5 +1,5 @@
 *******************
-pocketsphinx-python
+PocketSphinx Python
 *******************
 
 .. image:: https://img.shields.io/pypi/v/pocketsphinx.svg
