@@ -47,15 +47,15 @@ Requirements
 Install
 ~~~~~~~
 
-    .. code:: bash
-        pip install pocketsphinx
+.. code:: bash
+    pip install pocketsphinx
 
 or
 
-    .. code:: bash
-        git clone --recursive https://github.com/bambocher/pocketsphinx-python
-        cd pocketsphinx-python
-        python setup.py install
+.. code:: bash
+    git clone --recursive https://github.com/bambocher/pocketsphinx-python
+    cd pocketsphinx-python
+    python setup.py install
 
 Install on Ubuntu
 -----------------
@@ -73,51 +73,51 @@ Requirements
 Install
 ~~~~~~~
 
-    .. code:: bash
-        sudo apt-get install -qq python python-dev python-pip build-essential swig
-        sudo pip install pocketsphinx
+.. code:: bash
+    sudo apt-get install -qq python python-dev python-pip build-essential swig
+    sudo pip install pocketsphinx
 
 or
 
-    .. code:: bash
-        sudo apt-get install -qq python python-dev python-pip build-essential swig git
-        git clone --recursive https://github.com/bambocher/pocketsphinx-python
-        cd pocketsphinx-python
-        sudo python setup.py install
+.. code:: bash
+    sudo apt-get install -qq python python-dev python-pip build-essential swig git
+    git clone --recursive https://github.com/bambocher/pocketsphinx-python
+    cd pocketsphinx-python
+    sudo python setup.py install
 
 Basic usage
 -----------
 
-    .. code:: python
-        #!/usr/bin/env python
-        import os
+.. code:: python
+    #!/usr/bin/env python
+    import os
 
-        import sphinxbase as sb
-        import pocketsphinx as ps
+    import sphinxbase as sb
+    import pocketsphinx as ps
 
-        MODELDIR = 'deps/pocketsphinx/model'
-        DATADIR = 'deps/pocketsphinx/test/data'
+    MODELDIR = 'deps/pocketsphinx/model'
+    DATADIR = 'deps/pocketsphinx/test/data'
 
-        # Create a decoder with certain model
-        config = ps.Decoder.default_config()
-        config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
-        config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
-        config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-        config.set_string('-logfn', '/dev/null')
-        decoder = ps.Decoder(config)
+    # Create a decoder with certain model
+    config = ps.Decoder.default_config()
+    config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
+    config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
+    config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
+    config.set_string('-logfn', '/dev/null')
+    decoder = ps.Decoder(config)
 
-        # Decode streaming data.
-        decoder.start_utt()
-        stream = open(os.path.join(DATADIR, 'goforward.raw'), 'rb')
-        while True:
-            buf = stream.read(1024)
-            if buf:
-                decoder.process_raw(buf, False, False)
-            else:
-                break
-        decoder.end_utt()
-        stream.close()
-        print('Best hypothesis segments:', [seg.word for seg in decoder.seg()])
+    # Decode streaming data.
+    decoder.start_utt()
+    stream = open(os.path.join(DATADIR, 'goforward.raw'), 'rb')
+    while True:
+        buf = stream.read(1024)
+        if buf:
+            decoder.process_raw(buf, False, False)
+        else:
+            break
+    decoder.end_utt()
+    stream.close()
+    print('Best hypothesis segments:', [seg.word for seg in decoder.seg()])
 
 License
 -------
