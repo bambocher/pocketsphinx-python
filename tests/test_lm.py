@@ -1,7 +1,7 @@
 import os
 import unittest
 
-import sphinxbase.sphinxbase as sb
+import sphinxbase as sb
 
 from .test_decoder import Decoder
 
@@ -13,7 +13,7 @@ class Lm(Decoder):
 
     def load_turtle_lm(self):
         lm = sb.NGramModel(self.config, self.decoder.get_logmath(),
-                           os.path.join('pocketsphinx/test/data', 'turtle.lm.bin'))
+                           os.path.join('deps/pocketsphinx/test/data', 'turtle.lm.bin'))
 
         # TODO: TypeError: in method 'NGramModel_prob', argument 3 of type 'char const *const *'
 #        print(lm.prob(1, ['you']))
@@ -31,9 +31,9 @@ class Lm(Decoder):
 class TestLm(unittest.TestCase):
 
     def test_lm(self):
-        hmm_path = os.path.join('pocketsphinx/model', 'en-us/en-us')
-        lm_path = os.path.join('pocketsphinx/model', 'en-us/en-us.lm.bin')
-        dict_path = os.path.join('pocketsphinx/test/data', 'defective.dic')
+        hmm_path = os.path.join('deps/pocketsphinx/model', 'en-us/en-us')
+        lm_path = os.path.join('deps/pocketsphinx/model', 'en-us/en-us.lm.bin')
+        dict_path = os.path.join('deps/pocketsphinx/test/data', 'defective.dic')
 
         # Create a decoder with 'defective' language model
         lm = Lm(hmm_path, lm_path, dict_path, mmap=False)

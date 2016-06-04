@@ -1,7 +1,7 @@
 import unittest
 
-import sphinxbase.sphinxbase as sb
-import pocketsphinx.pocketsphinx as ps
+import sphinxbase as sb
+import pocketsphinx as ps
 
 
 class TestConfig(unittest.TestCase):

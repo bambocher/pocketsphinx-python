@@ -1,6 +1,6 @@
 import unittest
 
-import sphinxbase.sphinxbase as sb
+import sphinxbase as sb
 
 
 class TestFsg(unittest.TestCase):

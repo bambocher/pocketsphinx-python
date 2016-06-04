@@ -1,8 +1,8 @@
 import os
 import unittest
 
-import sphinxbase.sphinxbase as sb
-import pocketsphinx.pocketsphinx as ps
+import sphinxbase as sb
+import pocketsphinx as ps
 
 
 class Decoder(object):
@@ -12,8 +12,8 @@ class Decoder(object):
         self.hmm_path = hmm_path
         self.lm_path = lm_path
         self.dict_path = dict_path
-        self.model_path = 'pocketsphinx/model'
-        self.data_path = 'pocketsphinx/test/data'
+        self.model_path = 'deps/pocketsphinx/model'
+        self.data_path = 'deps/pocketsphinx/test/data'
         self.goforward_raw = os.path.join(self.data_path, 'goforward.raw')
         self.goforward_mfc = os.path.join(self.data_path, 'goforward.mfc')
         self.hypothesis = None

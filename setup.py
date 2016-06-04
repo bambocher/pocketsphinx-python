@@ -1,45 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
-"""
-Supported Platforms
--------------------
-
-- Windows 7
-- Windows 8
-- Ubuntu 14.10
-
-Dependencies
-------------
-
-* `Python <https://www.python.org/downloads/>`_
-* `Swig <http://www.swig.org/download.html>`_
-* `Microsoft Visual C++ Compiler for Python 2.7 <http://aka.ms/vcpython27>`_
-
-Install
--------
-
-.. code:: bash
-
-    pip install pocketsphinx
-
-or
---
-
-.. code:: bash
-
-    git clone https://github.com/bambocher/pocketsphinx-python.git
-    cd pocketsphinx-python
-    python setup.py install
-
-Import
-------
-
-.. code:: python
-
-from sphinxbase.sphinxbase import Config
-from pocketsphinx.pocketsphinx import Decoder
-"""
-
 import sys
 from glob import glob
 try:
@@ -52,50 +11,32 @@ except Extension as err:
     from distutils.command.build import build
     from distutils.command.install import install
 
-PY2 = sys.version_info[0] == 2
-
 libsphinxbase = (
-    glob('sphinxbase/src/libsphinxbase/lm/*.c') +
-    glob('sphinxbase/src/libsphinxbase/feat/*.c') +
-    glob('sphinxbase/src/libsphinxbase/util/*.c') +
-    glob('sphinxbase/src/libsphinxbase/fe/*.c')
+    glob('deps/sphinxbase/src/libsphinxbase/lm/*.c') +
+    glob('deps/sphinxbase/src/libsphinxbase/feat/*.c') +
+    glob('deps/sphinxbase/src/libsphinxbase/util/*.c') +
+    glob('deps/sphinxbase/src/libsphinxbase/fe/*.c')
 )
 
-libpocketsphinx = glob('pocketsphinx/src/libpocketsphinx/*.c')
+libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
 
-sb_include_dirs = ['sphinxbase/include', 'sphinxbase/include/sphinxbase']
-ps_include_dirs = ['pocketsphinx/include']
-
-libraries = []
+sb_include_dirs = ['deps/sphinxbase/include', 'deps/sphinxbase/include/sphinxbase']
+ps_include_dirs = ['deps/pocketsphinx/include']
 
 define_macros = [
     ('SPHINXBASE_EXPORTS', None),
     ('POCKETSPHINX_EXPORTS', None),
-    ('HAVE_CONFIG_H', None),
-    ('_CRT_SECURE_NO_DEPRECATE', None),
-    ('_USRDLL', None),
-    ('SPHINXDLL', None)
+    ('SPHINX_DLL', None),
+    ('HAVE_CONFIG_H', None)
 ]
 
 extra_compile_args = []
 
-if sys.platform.startswith('linux'):
-    sb_include_dirs.extend(['include'])
-    extra_compile_args.extend([
-        '-Wno-unused-label',
-        '-Wno-strict-prototypes',
-        '-Wno-parentheses',
-        '-Wno-unused-but-set-variable',
-        '-Wno-unused-variable',
-        '-Wno-unused-result',
-        '-Wno-sign-compare'
-    ])
-elif sys.platform.startswith('win'):
-    sb_include_dirs.extend(['sphinxbase/include/win32'])
+if sys.platform.startswith('win'):
+    sb_include_dirs.extend(['deps/sphinxbase/include/win32'])
     define_macros.extend([
-        ('WIN32', None),
-        ('_WINDOWS', None),
-        ('YY_NO_UNISTD_H', None)
+        ('_WIN32', None),
+        ('_CRT_SECURE_NO_DEPRECATE', None),
     ])
     extra_compile_args.extend([
         '/wd4244',
@@ -105,19 +46,29 @@ elif sys.platform.startswith('win'):
         '/wd4018'
     ])
 elif sys.platform.startswith('darwin'):
-    sb_include_dirs.extend(['include'])
+    sb_include_dirs.extend(['deps/sphinxbase/include/android'])
 else:
-    pass
+    sys.platform.startswith('linux')
+    sb_include_dirs.extend(['deps/sphinxbase/include/android'])
+    extra_compile_args.extend([
+        '-Wno-unused-label',
+        '-Wno-strict-prototypes',
+        '-Wno-parentheses',
+        '-Wno-unused-but-set-variable',
+        '-Wno-unused-variable',
+        '-Wno-unused-result',
+        '-Wno-sign-compare'
+    ])
 
 sb_sources = (
     libsphinxbase +
-    ['sphinxbase/swig/sphinxbase.i']
+    ['deps/sphinxbase/swig/sphinxbase.i']
 )
 
 ps_sources = (
     libsphinxbase +
     libpocketsphinx +
-    ['pocketsphinx/swig/pocketsphinx.i']
+    ['deps/pocketsphinx/swig/pocketsphinx.i']
 )
 
 swig_opts = ['-modern']
@@ -125,27 +76,27 @@ swig_opts = ['-modern']
 sb_swig_opts = (
     swig_opts +
     ['-I' + h for h in sb_include_dirs] +
-    ['-outdir', 'sphinxbase/swig/python']
+    ['-outdir', 'sphinxbase']
 )
 
 ps_swig_opts = (
     swig_opts +
     ['-I' + h for h in sb_include_dirs] +
     ['-I' + h for h in ps_include_dirs] +
-    ['-Isphinxbase/swig'] +
-    ['-outdir', 'pocketsphinx/swig/python']
+    ['-Ideps/sphinxbase/swig'] +
+    ['-outdir', 'pocketsphinx']
 )
 
 setup(
     name='pocketsphinx',
-    version='0.0.10',
+    version='0.1.0',
     description='Python interface to CMU SphinxBase and PocketSphinx libraries',
-    long_description=__doc__,
+    long_description=open('README.rst').read(),
     author='Dmitry Prazdnichnov',
     author_email='dp@bambucha.org',
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
-    url='https://github.com/cmusphinx/pocketsphinx-python',
+    url='https://github.com/bambocher/pocketsphinx-python',
     download_url='https://pypi.python.org/pypi/pocketsphinx',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
@@ -154,7 +105,6 @@ setup(
             sources=sb_sources,
             swig_opts=sb_swig_opts,
             include_dirs=sb_include_dirs,
-            libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args
         ),
@@ -163,16 +113,15 @@ setup(
             sources=ps_sources,
             swig_opts=ps_swig_opts,
             include_dirs=sb_include_dirs + ps_include_dirs,
-            libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args
         )
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
@@ -180,14 +129,13 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: C'
+        'Programming Language :: C',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Multimedia :: Sound/Audio :: Speech'
     ],
     license='BSD',
     keywords=['sphinxbase', 'pocketsphinx'],
-    platforms=['Windows'],
-    package_dir={
-        'sphinxbase': 'sphinxbase/swig/python',
-        'pocketsphinx': 'pocketsphinx/swig/python'
-    },
-    test_suite='tests'
+    test_suite='tests',
+    zip_safe=False
 )
