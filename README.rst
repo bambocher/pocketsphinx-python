@@ -1,5 +1,6 @@
+*******************
 pocketsphinx-python
-===================
+*******************
 
 .. image:: https://img.shields.io/pypi/v/pocketsphinx.svg
     :target: https://pypi.python.org/pypi/pocketsphinx
@@ -26,42 +27,48 @@ Pocketsphinx packages include python support, however, it is based on Automake a
 
 This package provides module created with Python distutils setup and can be more portable.
 
+===================
 Supported Platforms
--------------------
+===================
 
 * Windows 7
 * Windows 8
 * Ubuntu 14.04
 
+===================
 Install on Windows
-------------------
+===================
 
+------------
 Requirements
-~~~~~~~~~~~~
+------------
 
 * `Python <http://aka.ms/vcpython27>`__
 * `git <http://git-scm.com/downloads>`__
 * `Swig <http://www.swig.org/download.html>`__
 * `Microsoft Visual C++ Compiler for Python 2.7 <http://aka.ms/vcpython27>`__
 
+-------
 Install
-~~~~~~~
+-------
 
-.. code:: bash
-    pip install pocketsphinx
+.. code-block:: bash
 
-or
+    # From pip
+    $ pip install pocketsphinx
 
-.. code:: bash
-    git clone --recursive https://github.com/bambocher/pocketsphinx-python
-    cd pocketsphinx-python
-    python setup.py install
+    # From source
+    $ git clone --recursive https://github.com/bambocher/pocketsphinx-python
+    $ cd pocketsphinx-python
+    $ python setup.py install
 
+=================
 Install on Ubuntu
------------------
+=================
 
+------------
 Requirements
-~~~~~~~~~~~~
+------------
 
 * python
 * python-dev
@@ -70,25 +77,28 @@ Requirements
 * swig
 * git
 
+-------
 Install
-~~~~~~~
+-------
 
-.. code:: bash
-    sudo apt-get install -qq python python-dev python-pip build-essential swig
-    sudo pip install pocketsphinx
+.. code-block:: bash
 
-or
+    # From pip
+    $ sudo apt-get install -qq python python-dev python-pip build-essential swig
+    $ sudo pip install pocketsphinx
 
-.. code:: bash
-    sudo apt-get install -qq python python-dev python-pip build-essential swig git
-    git clone --recursive https://github.com/bambocher/pocketsphinx-python
-    cd pocketsphinx-python
-    sudo python setup.py install
+    # From source
+    $ sudo apt-get install -qq python python-dev python-pip build-essential swig git
+    $ git clone --recursive https://github.com/bambocher/pocketsphinx-python
+    $ cd pocketsphinx-python
+    $ sudo python setup.py install
 
+===========
 Basic usage
------------
+===========
 
-.. code:: python
+.. code-block:: python
+
     #!/usr/bin/env python
     import os
 
@@ -119,7 +129,8 @@ Basic usage
     stream.close()
     print('Best hypothesis segments:', [seg.word for seg in decoder.seg()])
 
+=======
 License
--------
+=======
 
 `The BSD License <https://github.com/bambocher/pocketsphinx-python/blob/master/LICENSE>`__
