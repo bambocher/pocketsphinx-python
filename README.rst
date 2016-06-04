@@ -33,6 +33,7 @@ Supported Platforms
 
 * Windows 7
 * Windows 8
+* Windows 10
 * Ubuntu 14.04
 
 ===================
@@ -113,7 +114,6 @@ Basic usage
     config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
     config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
     config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-    config.set_string('-logfn', '/dev/null')
     decoder = ps.Decoder(config)
 
     # Decode streaming data.
