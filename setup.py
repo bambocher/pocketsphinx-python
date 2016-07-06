@@ -46,7 +46,7 @@ try:
     from setuptools import setup, Extension
     from distutils.command.build import build
     from setuptools.command.install import install
-except Extension as err:
+except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
     from distutils.command.build import build
