@@ -33,4 +33,4 @@ class TestKws(unittest.TestCase):
     def test_kws(self):
         kws = Kws(lm_load=False, keyphrase='forward', kws_threshold=1e+20)
         keyword = kws.run()
-        self.assertEqual(keyword, [('forward', 883, 63, 121)])
+        self.assertEqual(keyword, [('forward', -617, 63, 121)])
