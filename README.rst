@@ -78,6 +78,7 @@ Requirements
 * build-essential
 * swig
 * git
+* libpulse-dev
 
 -------
 Install
@@ -86,11 +87,11 @@ Install
 .. code-block:: bash
 
     # From pip
-    $ sudo apt-get install -qq python python-dev python-pip build-essential swig
+    $ sudo apt-get install -qq python python-dev python-pip build-essential swig libpulse-dev
     $ sudo pip install pocketsphinx
 
     # From source
-    $ sudo apt-get install -qq python python-dev python-pip build-essential swig git
+    $ sudo apt-get install -qq python python-dev python-pip build-essential swig git libpulse-dev
     $ git clone --recursive https://github.com/bambocher/pocketsphinx-python
     $ cd pocketsphinx-python
     $ sudo python setup.py install

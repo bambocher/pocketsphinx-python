@@ -4,6 +4,7 @@ addons:
   apt:
     packages:
       - swig
+      - libpulse-dev
 python:
   - '2.7'
   - '3.2'
