@@ -3,7 +3,6 @@ recursive-include deps/sphinxbase/src *.c
 recursive-include deps/sphinxbase/src *.h
 recursive-include deps/sphinxbase/swig *.i
 prune deps/sphinxbase/include/wince
-prune deps/sphinxbase/src/libsphinxad
 prune deps/sphinxbase/src/sphinx_adtools
 prune deps/sphinxbase/src/sphinx_cepview
 prune deps/sphinxbase/src/sphinx_fe
@@ -15,5 +14,7 @@ recursive-include deps/pocketsphinx/src *.h
 recursive-include deps/pocketsphinx/swig *.i
 prune deps/pocketsphinx/src/gst-plugin
 prune deps/pocketsphinx/src/programs
+recursive-include swig *.i
+prune swig/sphinxbase/sphinxbase_wrap.c
 include README.rst
 include LICENSE
