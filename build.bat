@@ -5,10 +5,10 @@ del /s /f /q goforward.fsg goforward.htk goforward.lat
 del /s /f /q sphinxbase/sphinxbase.py sphinxbase/*.pyd
 del /s /f /q pocketsphinx/pocketsphinx.py pocketsphinx/*.pyd
 
-rem Python 2.7 x86
-
 "c:\Program Files (x86)\Python27\python.exe" setup.py sdist build
 "c:\Program Files (x86)\Python27\python.exe" setup.py sdist upload
+
+rem Python 2.7 x86
 
 "c:\Program Files (x86)\Python27\python.exe" setup.py bdist_egg build
 "c:\Program Files (x86)\Python27\python.exe" setup.py bdist_egg upload
