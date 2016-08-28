@@ -10,7 +10,6 @@ MANIFEST
 __pycache__
 *.htk
 *.lat
-*.fsg
 *.pyc
 *.log
 sphinxbase/sphinxbase.py

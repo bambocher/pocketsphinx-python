@@ -1,111 +1,60 @@
-import os
-import unittest
-
-import sphinxbase as sb
-import pocketsphinx as ps
-
-
-class Decoder(object):
-
-    def __init__(self, hmm_path=None, lm_path=None, dict_path=None, lm_load=True,
-                 keyphrase=None, kws_threshold=None, mmap=None):
-        self.hmm_path = hmm_path
-        self.lm_path = lm_path
-        self.dict_path = dict_path
-        self.model_path = 'deps/pocketsphinx/model'
-        self.data_path = 'deps/pocketsphinx/test/data'
-        self.goforward_raw = os.path.join(self.data_path, 'goforward.raw')
-        self.goforward_mfc = os.path.join(self.data_path, 'goforward.mfc')
-        self.hypothesis = None
-        self.config = ps.Decoder.default_config()
-        self.config.set_string('-hmm', self.hmm_path or os.path.join(self.model_path, 'en-us/en-us'))
-        self.config.set_string('-lm', self.lm_path or os.path.join(self.model_path, 'en-us/en-us.lm.bin')) if lm_load else None
-        self.config.set_string('-dict', self.dict_path or os.path.join(self.model_path, 'en-us/cmudict-en-us.dict'))
-        self.config.set_string('-keyphrase', keyphrase) if keyphrase else None
-        self.config.set_float('-kws_threshold', kws_threshold) if kws_threshold else None
-        self.config.set_boolean('-mmap', mmap) if mmap else None
-        self.decoder = ps.Decoder(self.config)
-
-    def get_hypothesis(self):
-        return self.hypothesis
-
-    def lookup_word(self, word):
-        return self.decoder.lookup_word(word)
-
-    def get_confidence(self, hypothesis):
-        logmath = self.decoder.get_logmath()
-        return logmath.exp(hypothesis.prob)
-
-    def get_hypothesis_segments(self):
-        return [seg.word for seg in self.decoder.seg()]
-
-    def get_best_decodings(self, count):
-        decodings = []
-        for decoding, i in zip(self.decoder.nbest(), range(count)):
-            decodings.append((decoding.hypstr, decoding.score))
-        return decodings
-
-    def run(self):
-        self.decoder.start_utt()
-        stream = open(self.goforward_raw, 'rb')
-        while True:
-            buf = stream.read(1024)
-            if buf:
-                self.decoder.process_raw(buf, False, False)
-            else:
-                break
-        self.decoder.end_utt()
-        stream.close()
-        self.hypothesis = self.decoder.hyp()
-
-    def run_cep(self):
-        stream = open(self.goforward_mfc, 'rb')
-        stream.read(4)
-        buf = stream.read(13780)
-        self.decoder.start_utt()
-        self.decoder.process_cep(buf, False, True)
-        self.decoder.end_utt()
-        stream.close()
-        self.hypothesis = self.decoder.hyp()
+# Copyright (c) 1999-2016 Carnegie Mellon University. All rights
+# reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+#
+# This work was supported in part by funding from the Defense Advanced
+# Research Projects Agency and the National Science Foundation of the
+# United States of America, and the CMU Sphinx Speech Consortium.
+#
+# THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+# ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
+# NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+from unittest import TestCase
+from pocketsphinx import Pocketsphinx
 
 
-class TestDecoder(unittest.TestCase):
+class TestRawDecoder(TestCase):
 
-    def test_decoder_lookup_word(self):
-        decoder = Decoder()
-        word = decoder.lookup_word('hello')
-        self.assertEqual(word, 'HH AH L OW')
-        word = decoder.lookup_word('abcdf')
-        self.assertEqual(word, None)
+    def __init__(self, *args, **kwargs):
+        self.ps = Pocketsphinx()
+        self.ps.decode()
+        super(TestRawDecoder, self).__init__(*args, **kwargs)
 
-    def test_decoder_raw(self):
-        decoder = Decoder()
-        decoder.run()
-        hypothesis = decoder.get_hypothesis()
-        self.assertEqual(hypothesis.hypstr, 'go forward ten meters')
-        self.assertEqual(hypothesis.best_score, -7066)
-        confidence = decoder.get_confidence(hypothesis)
-        self.assertEqual(confidence, 0.04042641466841839)
+    def test_raw_decoder_lookup_word(self):
+        self.assertEqual(self.ps.lookup_word('hello'), 'HH AH L OW')
+        self.assertEqual(self.ps.lookup_word('abcdf'), None)
 
-    def test_decoder_cep(self):
-        decoder = Decoder()
-        decoder.run_cep()
-        hypothesis = decoder.get_hypothesis()
-        self.assertEqual(hypothesis.hypstr, 'go forward ten meters')
-        self.assertEqual(hypothesis.best_score, -7095)
-        self.assertEqual(hypothesis.prob, -32715)
+    def test_raw_decoder_hypothesis(self):
+        self.assertEqual(self.ps.hypothesis(), 'go forward ten meters')
+        self.assertEqual(self.ps.score(), -7066)
+        self.assertEqual(self.ps.confidence(), 0.04042641466841839)
 
-    def test_decoder_hypothesis_segments(self):
-        decoder = Decoder()
-        decoder.run()
-        segments = decoder.get_hypothesis_segments()
-        self.assertEqual(segments, ['<s>', '<sil>', 'go', 'forward', 'ten', 'meters', '</s>'])
+    def test_raw_decoder_segments(self):
+        self.assertEqual(self.ps.segments(), [
+            '<s>', '<sil>', 'go', 'forward', 'ten', 'meters', '</s>'
+        ])
 
-    def test_decoder_best_decodings(self):
-        decoder = Decoder()
-        decoder.run()
-        best_decodings = decoder.get_best_decodings(10)
-        self.assertEqual(best_decodings, [
+    def test_raw_decoder_best_hypothesis(self):
+        self.assertEqual(self.ps.best(), [
             ('go forward ten meters', -28034),
             ('go for word ten meters', -28570),
             ('go forward and majors', -28670),
@@ -117,3 +66,18 @@ class TestDecoder(unittest.TestCase):
             ('go forward and leaders', -28706),
             ('go for work ten meters', -28722)
         ])
+
+
+class TestCepDecoder(TestCase):
+
+    def test_cep_decoder_hypothesis(self):
+        ps = Pocketsphinx()
+        with open('deps/pocketsphinx/test/data/goforward.mfc', 'rb') as f:
+            f.read(4)
+            buf = f.read(13780)
+            ps.start_utt()
+            ps.process_cep(buf, False, True)
+            ps.end_utt()
+        self.assertEqual(ps.hypothesis(), 'go forward ten meters')
+        self.assertEqual(ps.score(), -7095)
+        self.assertEqual(ps.probability(), -32715)

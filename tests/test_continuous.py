@@ -1,37 +1,41 @@
-import unittest
+# Copyright (c) 1999-2016 Carnegie Mellon University. All rights
+# reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+#
+# This work was supported in part by funding from the Defense Advanced
+# Research Projects Agency and the National Science Foundation of the
+# United States of America, and the CMU Sphinx Speech Consortium.
+#
+# THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+# ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
+# NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+from unittest import TestCase
+from pocketsphinx import Continuous
 
-from .test_decoder import Decoder
 
-
-class Continuous(Decoder):
-
-    def __init__(self, *args, **kwargs):
-        super(Continuous, self).__init__(*args, **kwargs)
-
-    def run(self):
-        in_speech = False
-        stream = open(self.goforward_raw, 'rb')
-        self.decoder.start_utt()
-        while True:
-            buf = stream.read(1024)
-            if buf:
-                self.decoder.process_raw(buf, False, False)
-                if self.decoder.get_in_speech() != in_speech:
-                    in_speech = self.decoder.get_in_speech()
-                    if not in_speech:
-                        self.decoder.end_utt()
-                        self.hypothesis = self.decoder.hyp()
-                        self.decoder.start_utt()
-            else:
-                break
-        self.decoder.end_utt()
-        stream.close()
-
-
-class TestContinuous(unittest.TestCase):
+class TestContinuous(TestCase):
 
     def test_continuous(self):
-        continuous = Continuous()
-        continuous.run()
-        hypothesis = continuous.get_hypothesis()
-        self.assertEqual(hypothesis.hypstr, 'go forward ten meters')
+        phrase = ''
+        for c in Continuous():
+            phrase = c.phrase
+        self.assertEqual(phrase, 'go forward ten meters')

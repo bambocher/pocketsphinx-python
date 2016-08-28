@@ -1,42 +1,56 @@
-import os
-import unittest
+# Copyright (c) 1999-2016 Carnegie Mellon University. All rights
+# reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+#
+# This work was supported in part by funding from the Defense Advanced
+# Research Projects Agency and the National Science Foundation of the
+# United States of America, and the CMU Sphinx Speech Consortium.
+#
+# THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+# ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
+# NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+from unittest import TestCase
+from pocketsphinx import Pocketsphinx, Jsgf
 
-import sphinxbase as sb
 
-from .test_decoder import Decoder
-
-
-class Jsgf(Decoder):
-
-    def __init__(self, *args, **kwargs):
-        super(Jsgf, self).__init__(*args, **kwargs)
-
-    def switch_to_jsgf_grammar(self):
-        jsgf = sb.Jsgf(os.path.join(self.data_path, 'goforward.gram'))
-        rule = jsgf.get_rule('goforward.move2')
-        fsg = jsgf.build_fsg(rule, self.decoder.get_logmath(), 7.5)
-        fsg.writefile('goforward.fsg')
-
-        self.decoder.set_fsg('goforward', fsg)
-        self.decoder.set_search('goforward')
-
-
-class TestJsgf(unittest.TestCase):
+class TestJsgf(TestCase):
 
     def test_jsgf(self):
-        hmm_path = os.path.join('deps/pocketsphinx/model', 'en-us/en-us')
-        lm_path = os.path.join('deps/pocketsphinx/test/data', 'turtle.lm.bin')
-        dict_path = os.path.join('deps/pocketsphinx/test/data', 'turtle.dic')
+        ps = Pocketsphinx(
+            lm='deps/pocketsphinx/test/data/turtle.lm.bin',
+            dic='deps/pocketsphinx/test/data/turtle.dic'
+        )
 
-        jsgf = Jsgf(hmm_path, lm_path, dict_path)
-        jsgf.run()
-        hypothesis = jsgf.get_hypothesis()
         # Decoding with 'turtle' language model
-        self.assertEqual(hypothesis.hypstr, 'go forward ten meters')
+        ps.decode()
+        self.assertEqual(ps.hypothesis(), 'go forward ten meters')
 
         # Switch to JSGF grammar
-        jsgf.switch_to_jsgf_grammar()
-        jsgf.run()
-        hypothesis = jsgf.get_hypothesis()
+        jsgf = Jsgf('deps/pocketsphinx/test/data/goforward.gram')
+        rule = jsgf.get_rule('goforward.move2')
+        fsg = jsgf.build_fsg(rule, ps.get_logmath(), 7.5)
+        ps.set_fsg('goforward', fsg)
+        ps.set_search('goforward')
+
         # Decoding with 'goforward' grammar
-        self.assertEqual(hypothesis.hypstr, 'go forward ten meters')
+        ps.decode()
+        self.assertEqual(ps.hypothesis(), 'go forward ten meters')
