@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sys
 from glob import glob
 try:
@@ -25,8 +26,7 @@ libsphinxbase = (
 libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
 
 sb_sources = (
-    libsphinxbase +
-    ['swig/sphinxbase/sphinxbase.i']
+    libsphinxbase
 )
 
 ps_sources = (
@@ -54,7 +54,6 @@ ps_swig_opts = (
     ['-I' + h for h in sb_include_dirs] +
     ['-I' + h for h in ps_include_dirs] +
     ['-Ideps/sphinxbase/swig'] +
-    ['-Iswig/sphinxbase'] +
     ['-outdir', 'pocketsphinx']
 )
 
@@ -68,10 +67,15 @@ define_macros = [
 extra_compile_args = []
 
 if sys.platform.startswith('win'):
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
-    sb_sources.extend(libsphinxad)
+    if os.environ.get('ENABLE_LIBSPHINXAD'):
+        libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
+        sb_sources.extend(libsphinxad)
+        sb_sources.extend(['swig/sphinxbase/sphinxbase.i'])
+        ps_swig_opts.extend(['-Iswig/sphinxbase'])
+        libraries.append('winmm')
+    else:
+        sb_sources.extend(['deps/sphinxbase/swig/sphinxbase.i'])
     sb_include_dirs.extend(['deps/sphinxbase/include/win32'])
-    libraries.append('winmm')
     define_macros.extend([
         ('_WIN32', None),
         ('_CRT_SECURE_NO_DEPRECATE', None),
@@ -87,16 +91,18 @@ if sys.platform.startswith('win'):
         '/wd4334'
     ])
 elif sys.platform.startswith('darwin'):
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_oss.c')
-    sb_sources.extend(libsphinxad)
     sb_include_dirs.extend(['deps/sphinxbase/include/android'])
-    libraries.extend(['asound'])
 else:
     sys.platform.startswith('linux')
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
-    sb_sources.extend(libsphinxad)
+    if os.environ.get('ENABLE_LIBSPHINXAD'):
+        libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
+        sb_sources.extend(libsphinxad)
+        sb_sources.extend(['swig/sphinxbase/sphinxbase.i'])
+        ps_swig_opts.extend(['-Iswig/sphinxbase'])
+        libraries.extend(['pulse', 'pulse-simple'])
+    else:
+        sb_sources.extend(['deps/sphinxbase/swig/sphinxbase.i'])
     sb_include_dirs.extend(['deps/sphinxbase/include/android'])
-    libraries.extend(['pulse', 'pulse-simple'])
     extra_compile_args.extend([
         '-Wno-unused-label',
         '-Wno-strict-prototypes',

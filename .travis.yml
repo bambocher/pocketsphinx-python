@@ -1,5 +1,7 @@
 language: python
 sudo: false
+env:
+  - ENABLE_LIBSPHINXAD=1
 addons:
   apt:
     packages:
