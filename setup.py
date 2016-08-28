@@ -117,7 +117,8 @@ else:
         '-Wno-unused-but-set-variable',
         '-Wno-unused-variable',
         '-Wno-unused-result',
-        '-Wno-sign-compare'
+        '-Wno-sign-compare',
+        '-Wno-misleading-indentation'
     ])
 
 setup(
