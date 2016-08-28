@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import sys
 from glob import glob
 try:
@@ -11,6 +10,10 @@ except Extension as err:
     from distutils.extension import Extension
     from distutils.command.build import build
     from distutils.command.install import install
+
+extra_compile_args = []
+
+extra_objects = []
 
 libraries = []
 
@@ -26,7 +29,8 @@ libsphinxbase = (
 libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
 
 sb_sources = (
-    libsphinxbase
+    libsphinxbase +
+    ['swig/sphinxbase/sphinxbase.i']
 )
 
 ps_sources = (
@@ -46,6 +50,7 @@ sb_swig_opts = (
     ['-modern'] +
     ['-I' + h for h in sb_include_dirs] +
     ['-Ideps/sphinxbase/swig'] +
+    ['-Iswig/sphinxbase'] +
     ['-outdir', 'sphinxbase']
 )
 
@@ -54,6 +59,7 @@ ps_swig_opts = (
     ['-I' + h for h in sb_include_dirs] +
     ['-I' + h for h in ps_include_dirs] +
     ['-Ideps/sphinxbase/swig'] +
+    ['-Iswig/sphinxbase'] +
     ['-outdir', 'pocketsphinx']
 )
 
@@ -64,18 +70,11 @@ define_macros = [
     ('HAVE_CONFIG_H', None)
 ]
 
-extra_compile_args = []
-
 if sys.platform.startswith('win'):
-    if os.environ.get('ENABLE_LIBSPHINXAD'):
-        libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
-        sb_sources.extend(libsphinxad)
-        sb_sources.extend(['swig/sphinxbase/sphinxbase.i'])
-        ps_swig_opts.extend(['-Iswig/sphinxbase'])
-        libraries.append('winmm')
-    else:
-        sb_sources.extend(['deps/sphinxbase/swig/sphinxbase.i'])
+    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
+    sb_sources.extend(libsphinxad)
     sb_include_dirs.extend(['deps/sphinxbase/include/win32'])
+    libraries.append('winmm')
     define_macros.extend([
         ('_WIN32', None),
         ('_CRT_SECURE_NO_DEPRECATE', None),
@@ -91,18 +90,26 @@ if sys.platform.startswith('win'):
         '/wd4334'
     ])
 elif sys.platform.startswith('darwin'):
-    sb_include_dirs.extend(['deps/sphinxbase/include/android'])
+    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
+    sb_sources.extend(libsphinxad)
+    sb_include_dirs.extend([
+        '/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers',
+        'deps/sphinxbase/include/android'
+    ])
+    extra_objects.extend([
+        '/System/Library/Frameworks/OpenAL.framework/Versions/A/OpenAL'
+    ])
+    extra_compile_args.extend([
+        '-Wno-macro-redefined',
+        '-Wno-sign-compare',
+        '-Wno-logical-op-parentheses'
+    ])
 else:
     sys.platform.startswith('linux')
-    if os.environ.get('ENABLE_LIBSPHINXAD'):
-        libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
-        sb_sources.extend(libsphinxad)
-        sb_sources.extend(['swig/sphinxbase/sphinxbase.i'])
-        ps_swig_opts.extend(['-Iswig/sphinxbase'])
-        libraries.extend(['pulse', 'pulse-simple'])
-    else:
-        sb_sources.extend(['deps/sphinxbase/swig/sphinxbase.i'])
+    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
+    sb_sources.extend(libsphinxad)
     sb_include_dirs.extend(['deps/sphinxbase/include/android'])
+    libraries.extend(['pulse', 'pulse-simple'])
     extra_compile_args.extend([
         '-Wno-unused-label',
         '-Wno-strict-prototypes',
@@ -131,6 +138,7 @@ setup(
             sources=sb_sources,
             swig_opts=sb_swig_opts,
             include_dirs=sb_include_dirs,
+            extra_objects=extra_objects,
             libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args
@@ -140,6 +148,7 @@ setup(
             sources=ps_sources,
             swig_opts=ps_swig_opts,
             include_dirs=sb_include_dirs + ps_include_dirs,
+            extra_objects=extra_objects,
             libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args
