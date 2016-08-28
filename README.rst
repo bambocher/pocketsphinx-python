@@ -32,10 +32,9 @@ This package provides module created with Python distutils setup and can be more
 Supported Platforms
 ===================
 
-* Windows 7
-* Windows 8
-* Windows 10
-* Ubuntu 14.04
+* Windows
+* Linux
+* Mac OS X
 
 ===================
 Install on Windows
@@ -102,34 +101,37 @@ Basic usage
 
 .. code-block:: python
 
-    #!/usr/bin/env python
-    import os
+    from pocketsphinx import Pocketsphinx
 
-    import sphinxbase as sb
-    import pocketsphinx as ps
+    ps = Pocketsphinx()
+    ps.decode()
 
-    MODELDIR = 'deps/pocketsphinx/model'
-    DATADIR = 'deps/pocketsphinx/test/data'
+    print(ps.segments())
+    # ['<s>', '<sil>', 'go', 'forward', 'ten', 'meters', '</s>']
 
-    # Create a decoder with certain model
-    config = ps.Decoder.default_config()
-    config.set_string('-hmm', os.path.join(MODELDIR, 'en-us/en-us'))
-    config.set_string('-lm', os.path.join(MODELDIR, 'en-us/en-us.lm.bin'))
-    config.set_string('-dict', os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict'))
-    decoder = ps.Decoder(config)
+    print(ps.hypothesis())
+    # go forward ten meters
 
-    # Decode streaming data.
-    decoder.start_utt()
-    stream = open(os.path.join(DATADIR, 'goforward.raw'), 'rb')
-    while True:
-        buf = stream.read(1024)
-        if buf:
-            decoder.process_raw(buf, False, False)
-        else:
-            break
-    decoder.end_utt()
-    stream.close()
-    print('Best hypothesis segments:', [seg.word for seg in decoder.seg()])
+    print(ps.probability())
+    # -32079
+
+    print(ps.score())
+    # -7066
+
+    print(ps.confidence())
+    # 0.04042641466841839
+
+    print(*ps.best(), sep='\n')
+    # ('go forward ten meters', -28034)
+    # ('go for word ten meters', -28570)
+    # ('go forward and majors', -28670)
+    # ('go forward and meters', -28681)
+    # ('go forward and readers', -28685)
+    # ('go forward ten readers', -28688)
+    # ('go forward ten leaders', -28695)
+    # ('go forward can meters', -28695)
+    # ('go forward and leaders', -28706)
+    # ('go for work ten meters', -28722)
 
 ==================================
 Projects using pocketsphinx-python
