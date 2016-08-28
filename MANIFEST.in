@@ -15,6 +15,9 @@ recursive-include deps/pocketsphinx/swig *.i
 prune deps/pocketsphinx/src/gst-plugin
 prune deps/pocketsphinx/src/programs
 recursive-include swig *.i
-prune swig/sphinxbase/sphinxbase_wrap.c
 include README.rst
 include LICENSE
+recursive-include deps/pocketsphinx/model/en-us/en-us *
+include deps/pocketsphinx/model/en-us/en-us.lm.bin
+include deps/pocketsphinx/model/en-us/cmudict-en-us.dict
+include deps/pocketsphinx/test/data/goforward.raw

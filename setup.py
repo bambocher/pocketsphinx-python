@@ -165,5 +165,22 @@ setup(
     license='BSD',
     keywords=['sphinxbase', 'pocketsphinx'],
     test_suite='tests',
+    data_files=[
+        ('pocketsphinx/data', ['deps/pocketsphinx/test/data/goforward.raw']),
+        ('pocketsphinx/model', [
+            'deps/pocketsphinx/model/en-us/cmudict-en-us.dict',
+            'deps/pocketsphinx/model/en-us/en-us.lm.bin'
+        ]),
+        ('pocketsphinx/model/en-us', [
+            'deps/pocketsphinx/model/en-us/en-us/README',
+            'deps/pocketsphinx/model/en-us/en-us/feat.params',
+            'deps/pocketsphinx/model/en-us/en-us/mdef',
+            'deps/pocketsphinx/model/en-us/en-us/means',
+            'deps/pocketsphinx/model/en-us/en-us/noisedict',
+            'deps/pocketsphinx/model/en-us/en-us/sendump',
+            'deps/pocketsphinx/model/en-us/en-us/transition_matrices',
+            'deps/pocketsphinx/model/en-us/en-us/variances'
+        ])
+    ],
     zip_safe=False
 )
