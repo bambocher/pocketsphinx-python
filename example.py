@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 from pocketsphinx import Pocketsphinx
 
 ps = Pocketsphinx()
