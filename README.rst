@@ -101,6 +101,7 @@ Basic usage
 
 .. code-block:: python
 
+    from __future__ import print_function
     from pocketsphinx import Pocketsphinx
 
     ps = Pocketsphinx()
