@@ -182,4 +182,4 @@ class Continuous(Pocketsphinx):
                 raise StopIteration
 
     def next(self):
-        self.__next__()
+        return self.__next__()
