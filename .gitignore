@@ -1,13 +1,11 @@
-.idea
-venv2
-venv3
-build
-dist
+.idea/
+build/
+dist/
 MANIFEST
+__pycache__
 *.pyd
 *.egg-info
 *.so
-__pycache__
 *.htk
 *.lat
 *.pyc
@@ -15,3 +13,5 @@ __pycache__
 sphinxbase/sphinxbase.py
 pocketsphinx/pocketsphinx.py
 *_wrap.c
+pocketsphinx/data/
+pocketsphinx/model/
