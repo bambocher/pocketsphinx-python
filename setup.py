@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import os
 import sys
+from shutil import copy, copytree, rmtree, ignore_patterns
 from glob import glob
 try:
     from setuptools import setup, Extension
@@ -121,6 +123,15 @@ else:
         '-Wno-misleading-indentation'
     ])
 
+rmtree('pocketsphinx/data', True)
+rmtree('pocketsphinx/model', True)
+copytree('deps/pocketsphinx/model/en-us',
+         'pocketsphinx/model',
+         ignore=ignore_patterns('en-us-phone.lm.bin'))
+os.makedirs('pocketsphinx/data')
+copy('deps/pocketsphinx/test/data/goforward.raw',
+     'pocketsphinx/data/goforward.raw')
+
 setup(
     name='pocketsphinx',
     version='0.1.1',
@@ -175,22 +186,6 @@ setup(
     license='BSD',
     keywords=['sphinxbase', 'pocketsphinx'],
     test_suite='tests',
-    data_files=[
-        ('pocketsphinx/data', ['deps/pocketsphinx/test/data/goforward.raw']),
-        ('pocketsphinx/model', [
-            'deps/pocketsphinx/model/en-us/cmudict-en-us.dict',
-            'deps/pocketsphinx/model/en-us/en-us.lm.bin'
-        ]),
-        ('pocketsphinx/model/en-us', [
-            'deps/pocketsphinx/model/en-us/en-us/README',
-            'deps/pocketsphinx/model/en-us/en-us/feat.params',
-            'deps/pocketsphinx/model/en-us/en-us/mdef',
-            'deps/pocketsphinx/model/en-us/en-us/means',
-            'deps/pocketsphinx/model/en-us/en-us/noisedict',
-            'deps/pocketsphinx/model/en-us/en-us/sendump',
-            'deps/pocketsphinx/model/en-us/en-us/transition_matrices',
-            'deps/pocketsphinx/model/en-us/en-us/variances'
-        ])
-    ],
+    include_package_data=True,
     zip_safe=False
 )

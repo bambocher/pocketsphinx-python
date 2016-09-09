@@ -37,6 +37,16 @@ from .pocketsphinx import *
 DefaultConfig = Decoder.default_config
 
 
+def get_model_path():
+    """ Return path to the model. """
+    return os.path.join(os.path.dirname(__file__), 'model')
+
+
+def get_data_path():
+    """ Return path to the model. """
+    return os.path.join(os.path.dirname(__file__), 'data')
+
+
 class Phrase(object):
 
     def __init__(self, phrase, probability, score):
@@ -51,14 +61,9 @@ class Phrase(object):
 class Pocketsphinx(Decoder):
 
     def __init__(self, **kwargs):
-        model_path = os.path.join(os.getcwd(), 'deps/pocketsphinx/model/en-us')
-        if not os.path.exists(model_path):
-            model_path = os.path.join(os.path.dirname(__file__), 'model')
+        model_path = get_model_path()
+        data_path = get_data_path()
 
-        data_path = os.path.join(
-            os.getcwd(), 'deps/pocketsphinx/test/data')
-        if not os.path.exists(data_path):
-            data_path = os.path.join(os.path.dirname(__file__), 'data')
         self.goforward = os.path.join(data_path, 'goforward.raw')
 
         if kwargs.get('dic') is not None and kwargs.get('dict') is None:
