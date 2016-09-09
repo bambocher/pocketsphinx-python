@@ -10,6 +10,7 @@ __pycache__
 *.lat
 *.pyc
 *.log
+sphinxbase/ad.py
 sphinxbase/sphinxbase.py
 pocketsphinx/pocketsphinx.py
 *_wrap.c

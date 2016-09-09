@@ -35,6 +35,20 @@
  *
  */
 
+%module ad
+
+%include pybuffer.i
+%include typemaps.i
+
+%begin %{
+    #include <Python.h>
+    #include <sphinxbase/ad.h>
+
+    typedef ad_rec_t Ad;
+%}
+
+typedef struct {} Ad;
+
 %extend Ad {
     Ad(int *errcode) {
         Ad *ad = ad_open();

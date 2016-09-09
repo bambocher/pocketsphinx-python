@@ -196,7 +196,7 @@ test_py3_x64: clean
 
 clean:
 	rm -rf build *.egg-info tests/*.{htk,lat}
-	rm -rf sphinxbase/sphinxbase.py
+	rm -rf sphinxbase/{ad,sphinxbase}.py
 	rm -rf pocketsphinx/pocketsphinx.py
 	rm -rf {sphinxbase,pocketsphinx}/*.{so,pyd}
 	rm -rf {sphinxbase,pocketsphinx,tests}/*.pyc

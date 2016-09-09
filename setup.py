@@ -23,9 +23,11 @@ libsphinxbase = (
 
 libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
 
+ad_sources = ['swig/sphinxbase/ad.i']
+
 sb_sources = (
     libsphinxbase +
-    ['swig/sphinxbase/sphinxbase.i']
+    ['deps/sphinxbase/swig/sphinxbase.i']
 )
 
 ps_sources = (
@@ -49,7 +51,7 @@ define_macros = [
 ]
 
 if sys.platform.startswith('win'):
-    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
+    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
     sb_include_dirs.append('deps/sphinxbase/include/win32')
     libraries.append('winmm')
     extra_compile_args.extend([
@@ -66,7 +68,7 @@ if sys.platform.startswith('win'):
     ])
     extra_link_args.append('/ignore:4197')
 elif sys.platform.startswith('darwin'):
-    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
+    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
     sb_include_dirs.extend([
         '/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers',
         'deps/sphinxbase/include/android'
@@ -80,7 +82,7 @@ elif sys.platform.startswith('darwin'):
         '-Wno-logical-op-parentheses'
     ])
 elif sys.platform.startswith('linux'):
-    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
+    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
     sb_include_dirs.append('deps/sphinxbase/include/android')
     libraries.extend(['pulse', 'pulse-simple'])
     extra_compile_args.extend([
@@ -131,12 +133,22 @@ setup(
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
         Extension(
+            name='sphinxbase._ad',
+            sources=ad_sources,
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs,
+            extra_objects=extra_objects,
+            libraries=libraries,
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+        ),
+        Extension(
             name='sphinxbase._sphinxbase',
             sources=sb_sources,
             swig_opts=sb_swig_opts,
             include_dirs=sb_include_dirs,
             extra_objects=extra_objects,
-            libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
             extra_link_args=extra_link_args,
@@ -147,7 +159,6 @@ setup(
             swig_opts=ps_swig_opts,
             include_dirs=sb_include_dirs + ps_include_dirs,
             extra_objects=extra_objects,
-            libraries=libraries,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
             extra_link_args=extra_link_args
