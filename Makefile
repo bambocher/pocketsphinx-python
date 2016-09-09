@@ -177,9 +177,9 @@ upload_wininst_py3_x64: clean
 	$(PYTHON3_X64) setup.py bdist_wininst upload
 
 ifeq ($(OS),Windows_NT)
-test: test_py2_x86 test_py2_x64 test_py3_x86 test_py3_x86
+test: test_py2_x86 test_py2_x64 test_py3_x86 test_py3_x64
 else
-test: test_py2_x86 test_py2_x64
+test: test_py2_x64 test_py3_x64
 endif
 
 test_py2_x86: clean
