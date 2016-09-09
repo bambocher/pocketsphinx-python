@@ -5,21 +5,14 @@ from shutil import copy, copytree, rmtree, ignore_patterns
 from glob import glob
 try:
     from setuptools import setup, Extension
-    from distutils.command.build import build
-    from setuptools.command.install import install
-except Extension as err:
+except:
     from distutils.core import setup
     from distutils.extension import Extension
-    from distutils.command.build import build
-    from distutils.command.install import install
 
 extra_compile_args = []
-
+extra_link_args = []
 extra_objects = []
-
 libraries = []
-
-libsphinxad = []
 
 libsphinxbase = (
     glob('deps/sphinxbase/src/libsphinxbase/lm/*.c') +
@@ -48,23 +41,6 @@ sb_include_dirs = [
 
 ps_include_dirs = ['deps/pocketsphinx/include']
 
-sb_swig_opts = (
-    ['-modern'] +
-    ['-I' + h for h in sb_include_dirs] +
-    ['-Ideps/sphinxbase/swig'] +
-    ['-Iswig/sphinxbase'] +
-    ['-outdir', 'sphinxbase']
-)
-
-ps_swig_opts = (
-    ['-modern'] +
-    ['-I' + h for h in sb_include_dirs] +
-    ['-I' + h for h in ps_include_dirs] +
-    ['-Ideps/sphinxbase/swig'] +
-    ['-Iswig/sphinxbase'] +
-    ['-outdir', 'pocketsphinx']
-)
-
 define_macros = [
     ('SPHINXBASE_EXPORTS', None),
     ('POCKETSPHINX_EXPORTS', None),
@@ -73,14 +49,9 @@ define_macros = [
 ]
 
 if sys.platform.startswith('win'):
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
-    sb_sources.extend(libsphinxad)
-    sb_include_dirs.extend(['deps/sphinxbase/include/win32'])
+    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
+    sb_include_dirs.append('deps/sphinxbase/include/win32')
     libraries.append('winmm')
-    define_macros.extend([
-        ('_WIN32', None),
-        ('_CRT_SECURE_NO_DEPRECATE', None),
-    ])
     extra_compile_args.extend([
         '/wd4244',
         '/wd4267',
@@ -89,11 +60,13 @@ if sys.platform.startswith('win'):
         '/wd4018',
         '/wd4311',
         '/wd4312',
-        '/wd4334'
+        '/wd4334',
+        '/wd4477',
+        '/wd4996'
     ])
+    extra_link_args.append('/ignore:4197')
 elif sys.platform.startswith('darwin'):
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
-    sb_sources.extend(libsphinxad)
+    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
     sb_include_dirs.extend([
         '/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers',
         'deps/sphinxbase/include/android'
@@ -106,11 +79,9 @@ elif sys.platform.startswith('darwin'):
         '-Wno-sign-compare',
         '-Wno-logical-op-parentheses'
     ])
-else:
-    sys.platform.startswith('linux')
-    libsphinxad.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
-    sb_sources.extend(libsphinxad)
-    sb_include_dirs.extend(['deps/sphinxbase/include/android'])
+elif sys.platform.startswith('linux'):
+    sb_sources.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
+    sb_include_dirs.append('deps/sphinxbase/include/android')
     libraries.extend(['pulse', 'pulse-simple'])
     extra_compile_args.extend([
         '-Wno-unused-label',
@@ -122,6 +93,20 @@ else:
         '-Wno-sign-compare',
         '-Wno-misleading-indentation'
     ])
+
+sb_swig_opts = (
+    ['-modern'] +
+    ['-I' + h for h in sb_include_dirs] +
+    ['-Ideps/sphinxbase/swig'] +
+    ['-outdir', 'sphinxbase']
+)
+
+ps_swig_opts = (
+    ['-modern'] +
+    ['-I' + h for h in sb_include_dirs + ps_include_dirs] +
+    ['-Ideps/sphinxbase/swig'] +
+    ['-outdir', 'pocketsphinx']
+)
 
 rmtree('pocketsphinx/data', True)
 rmtree('pocketsphinx/model', True)
@@ -135,7 +120,7 @@ copy('deps/pocketsphinx/test/data/goforward.raw',
 setup(
     name='pocketsphinx',
     version='0.1.1',
-    description='Python interface to CMU SphinxBase and PocketSphinx libraries',
+    description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.rst').read(),
     author='Dmitry Prazdnichnov',
     author_email='dp@bambucha.org',
@@ -153,7 +138,8 @@ setup(
             extra_objects=extra_objects,
             libraries=libraries,
             define_macros=define_macros,
-            extra_compile_args=extra_compile_args
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
         ),
         Extension(
             name='pocketsphinx._pocketsphinx',
@@ -163,7 +149,8 @@ setup(
             extra_objects=extra_objects,
             libraries=libraries,
             define_macros=define_macros,
-            extra_compile_args=extra_compile_args
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args
         )
     ],
     classifiers=[
