@@ -72,6 +72,15 @@ typedef struct {} Ad;
         ad_close($self);
     }
 
+    Ad * __enter__() {
+        ad_start_rec($self);
+        return $self;
+    }
+
+    void __exit__() {
+        ad_stop_rec($self);
+    }
+
     int start_rec(int *errcode) {
         return *errcode = ad_start_rec($self);
     }
