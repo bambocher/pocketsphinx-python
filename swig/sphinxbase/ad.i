@@ -66,20 +66,12 @@ negative error code."
 typedef struct {} Ad;
 
 %extend Ad {
-    Ad(int *errcode) {
-        Ad *ad = ad_open();
-        *errcode = ad ? 0 : -1;
-        return ad;
-    }
-
-    Ad(int32 samples_per_sec, int *errcode) {
-        Ad *ad = ad_open_sps(samples_per_sec);
-        *errcode = ad ? 0 : -1;
-        return ad;
-    }
-
-    Ad(const char *dev, int32 samples_per_sec, int *errcode) {
-        Ad *ad = ad_open_dev(dev, samples_per_sec);
+    Ad(const char *device=NULL, int32 rate=16000, int *errcode) {
+        Ad *ad;
+        if (device == NULL)
+            ad = ad_open_sps(rate);
+        else
+            ad = ad_open_dev(device, rate);
         *errcode = ad ? 0 : -1;
         return ad;
     }
