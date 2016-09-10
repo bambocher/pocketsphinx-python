@@ -35,7 +35,23 @@
  *
  */
 
-%module ad
+%define DOCSTRING
+"This documentation was automatically generated using original comments in
+Doxygen format. As some C types and data structures cannot be directly mapped
+into Python types, some non-trivial type conversion could have place.
+Basically a type is replaced with another one that has the closest match, and
+sometimes one argument of generated function comprises several arguments of the
+original function (usually two).
+
+Functions having error code as the return value and returning effective
+value in one of its arguments are transformed so that the effective value is
+returned in a regular fashion and run-time exception is being thrown in case of
+negative error code."
+%enddef
+
+%module(docstring=DOCSTRING) ad
+
+%feature("autodoc", "1");
 
 %include pybuffer.i
 %include typemaps.i
