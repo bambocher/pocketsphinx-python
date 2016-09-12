@@ -56,22 +56,20 @@ negative error code."
 %include pybuffer.i
 %include typemaps.i
 
-%begin %{
-    #include <Python.h>
-    #include <sphinxbase/ad.h>
-
-    typedef ad_rec_t Ad;
+%{
+#include <sphinxbase/ad.h>
+typedef ad_rec_t Ad;
 %}
 
 typedef struct {} Ad;
 
 %extend Ad {
-    Ad(const char *device=NULL, int32 rate=16000, int *errcode) {
+    Ad(const char *audio_device=NULL, int sampling_rate=16000, int *errcode) {
         Ad *ad;
-        if (device == NULL)
-            ad = ad_open_sps(rate);
+        if (audio_device == NULL)
+            ad = ad_open_sps(sampling_rate);
         else
-            ad = ad_open_dev(device, rate);
+            ad = ad_open_dev(audio_device, sampling_rate);
         *errcode = ad ? 0 : -1;
         return ad;
     }
@@ -80,27 +78,27 @@ typedef struct {} Ad;
         ad_close($self);
     }
 
-    Ad * __enter__() {
-        ad_start_rec($self);
+    Ad *__enter__(int *errcode) {
+        *errcode = ad_start_rec($self);
         return $self;
     }
 
-    void __exit__() {
-        ad_stop_rec($self);
+    void __exit__(PyObject *exception_type, PyObject *exception_value,
+                  PyObject *exception_traceback, int *errcode) {
+        *errcode = ad_stop_rec($self);
     }
 
-    int start_rec(int *errcode) {
+    int start_recording(int *errcode) {
         return *errcode = ad_start_rec($self);
     }
 
-    int stop_rec(int *errcode) {
+    int stop_recording(int *errcode) {
         return *errcode = ad_stop_rec($self);
     }
 
     %include <pybuffer.i>
-    %pybuffer_mutable_binary(char *SDATA, size_t NSAMP);
-    int read(char *SDATA, size_t NSAMP, int *errcode) {
-        NSAMP /= sizeof(int16);
-        return *errcode = ad_read($self, (int16 *)SDATA, NSAMP);
+    %pybuffer_mutable_binary(char *DATA, size_t SIZE);
+    int readinto(char *DATA, size_t SIZE, int *errcode) {
+        return *errcode = ad_read($self, (int16*)DATA, SIZE /= sizeof(int16));
     }
 }

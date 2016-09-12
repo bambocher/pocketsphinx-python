@@ -73,11 +73,10 @@ class TestCepDecoder(TestCase):
     def test_cep_decoder_hypothesis(self):
         ps = Pocketsphinx()
         with open('deps/pocketsphinx/test/data/goforward.mfc', 'rb') as f:
-            f.read(4)
-            buf = f.read(13780)
-            ps.start_utt()
-            ps.process_cep(buf, False, True)
-            ps.end_utt()
+            with ps.start_utterance():
+                f.read(4)
+                buf = f.read(13780)
+                ps.process_cep(buf, False, True)
         self.assertEqual(ps.hypothesis(), 'go forward ten meters')
         self.assertEqual(ps.score(), -7095)
         self.assertEqual(ps.probability(), -32715)

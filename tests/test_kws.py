@@ -29,19 +29,14 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from unittest import TestCase
-from pocketsphinx import Pocketsphinx
+from pocketsphinx import AudioFile
 
 
 class TestKws(TestCase):
 
     def test_kws(self):
-        def keyphrase(k):
-            k.keyphrase = [
-                (s.word, s.prob, s.start_frame, s.end_frame)
-                for s in k.seg()
-            ]
-
-        ps = Pocketsphinx(lm=False, keyphrase='forward', kws_threshold=1e+20)
-        ps.decode(callback=keyphrase)
-
-        self.assertEqual(ps.keyphrase, [('forward', -617, 63, 121)])
+        segments = []
+        for phrase in AudioFile(lm=False, keyphrase='forward',
+                                kws_threshold=1e+20):
+            segments = phrase.segments(detailed=True)
+        self.assertEqual(segments, [('forward', -617, 63, 121)])

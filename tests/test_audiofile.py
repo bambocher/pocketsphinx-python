@@ -29,13 +29,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from unittest import TestCase
-from pocketsphinx import Continuous
+from pocketsphinx import AudioFile
 
 
-class TestContinuous(TestCase):
+class TestAudioFile(TestCase):
 
-    def test_continuous(self):
-        phrase = ''
-        for c in Continuous():
-            phrase = c.phrase
-        self.assertEqual(phrase, 'go forward ten meters')
+    def test_audiofile(self):
+        hypothesis = ''
+        for phrase in AudioFile():
+            hypothesis = str(phrase)
+        self.assertEqual(hypothesis, 'go forward ten meters')

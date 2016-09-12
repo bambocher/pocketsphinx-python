@@ -30,6 +30,8 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import sys
+import signal
+from contextlib import contextmanager
 from sphinxbase import *
 from .pocketsphinx import *
 
@@ -43,19 +45,8 @@ def get_model_path():
 
 
 def get_data_path():
-    """ Return path to the model. """
+    """ Return path to the data. """
     return os.path.join(os.path.dirname(__file__), 'data')
-
-
-class Phrase(object):
-
-    def __init__(self, phrase, probability, score):
-        self.phrase = phrase
-        self.probability = probability
-        self.score = score
-
-    def __str__(self):
-        return self.phrase
 
 
 class Pocketsphinx(Decoder):
@@ -98,36 +89,45 @@ class Pocketsphinx(Decoder):
 
         super(Pocketsphinx, self).__init__(config)
 
-    def decode(self, audio=None, max_samples=1024,
-               no_search=False, full_utt=False, callback=None):
-        keyphrase = self.get_config().get_string('-keyphrase')
+    def __str__(self):
+        return self.hypothesis()
+
+    @contextmanager
+    def start_utterance(self):
         self.start_utt()
-        with open(audio or self.goforward, 'rb') as f:
-            while True:
-                buf = f.read(max_samples)
-                if buf:
-                    self.process_raw(buf, no_search, full_utt)
-                else:
-                    break
-                if keyphrase and self.hyp():
-                    self.end_utt()
-                    if callback:
-                        callback(self)
-                    self.start_utt()
+        yield
         self.end_utt()
 
-    def phrase(self):
-        hyp = self.hyp()
-        if hyp:
-            return Phrase(hyp.hypstr, hyp.prob, hyp.best_score)
+    @contextmanager
+    def end_utterance(self):
+        self.end_utt()
+        yield
+        self.start_utt()
 
-    def segments(self):
-        return [s.word for s in self.seg()]
+    def decode(self, audio_file=None, buffer_size=2048,
+               no_search=False, full_utt=False):
+        buf = bytearray(buffer_size)
+        with open(audio_file or self.goforward, 'rb') as f:
+            with self.start_utterance():
+                while f.readinto(buf):
+                    self.process_raw(buf, no_search, full_utt)
+        return self
+
+    def segments(self, detailed=False):
+        if detailed:
+            return [
+                (s.word, s.prob, s.start_frame, s.end_frame)
+                for s in self.seg()
+            ]
+        else:
+            return [s.word for s in self.seg()]
 
     def hypothesis(self):
         hyp = self.hyp()
         if hyp:
             return hyp.hypstr
+        else:
+            return ''
 
     def probability(self):
         hyp = self.hyp()
@@ -151,35 +151,75 @@ class Pocketsphinx(Decoder):
             return self.get_logmath().exp(hyp.prob)
 
 
-class Continuous(Pocketsphinx):
+class AudioFile(Pocketsphinx):
 
     def __init__(self, **kwargs):
-        audio = kwargs.pop('audio', None)
-        super(Continuous, self).__init__(**kwargs)
-        self.stream = open(audio or self.goforward, 'rb')
+        signal.signal(signal.SIGINT, self.stop)
+
+        self.audio_file = kwargs.pop('audio_file', None)
+        self.buffer_size = kwargs.pop('buffer_size', 2048)
+        self.no_search = kwargs.pop('no_search', False)
+        self.full_utt = kwargs.pop('full_utt', False)
+
+        self.keyphrase = kwargs.get('keyphrase')
+
         self.in_speech = False
-        self.start_utt()
+        self.buf = bytearray(self.buffer_size)
+
+        super(AudioFile, self).__init__(**kwargs)
+
+        self.f = open(self.audio_file or self.goforward, 'rb')
 
     def __iter__(self):
-        return self
+        with self.f:
+            with self.start_utterance():
+                while self.f.readinto(self.buf):
+                    self.process_raw(self.buf, self.no_search, self.full_utt)
+                    if self.keyphrase and self.hyp():
+                        with self.end_utterance():
+                            yield self
+                    elif self.in_speech != self.get_in_speech():
+                        self.in_speech = self.get_in_speech()
+                        if not self.in_speech and self.hyp():
+                            with self.end_utterance():
+                                yield self
 
-    def __next__(self):
-        while True:
-            buf = self.stream.read(1024)
-            if buf:
-                self.process_raw(buf, False, False)
-                if self.get_in_speech() != self.in_speech:
-                    self.in_speech = self.get_in_speech()
-                    if not self.in_speech:
-                        self.end_utt()
-                        phrase = self.phrase()
-                        if phrase:
-                            return phrase
-                        self.start_utt()
-                continue
-            else:
-                self.stream.close()
-                raise StopIteration
+    def stop(self, *args, **kwargs):
+        raise StopIteration
 
-    def next(self):
-        return self.__next__()
+
+class LiveSpeech(Pocketsphinx):
+
+    def __init__(self, **kwargs):
+        signal.signal(signal.SIGINT, self.stop)
+
+        self.audio_device = kwargs.pop('audio_device', None)
+        self.sampling_rate = kwargs.pop('sampling_rate', 16000)
+        self.buffer_size = kwargs.pop('buffer_size', 2048)
+        self.no_search = kwargs.pop('no_search', False)
+        self.full_utt = kwargs.pop('full_utt', False)
+
+        self.keyphrase = kwargs.get('keyphrase')
+
+        self.in_speech = False
+        self.buf = bytearray(self.buffer_size)
+        self.ad = Ad(self.audio_device, self.sampling_rate)
+
+        super(LiveSpeech, self).__init__(**kwargs)
+
+    def __iter__(self):
+        with self.ad:
+            with self.start_utterance():
+                while self.ad.readinto(self.buf) >= 0:
+                    self.process_raw(self.buf, self.no_search, self.full_utt)
+                    if self.keyphrase and self.hyp():
+                        with self.end_utterance():
+                            yield self
+                    elif self.in_speech != self.get_in_speech():
+                        self.in_speech = self.get_in_speech()
+                        if not self.in_speech and self.hyp():
+                            with self.end_utterance():
+                                yield self
+
+    def stop(self, *args, **kwargs):
+        raise StopIteration
