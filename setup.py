@@ -1,13 +1,22 @@
 #!/usr/bin/env python
 import os
 import sys
-from shutil import copy, copytree, rmtree, ignore_patterns
+from shutil import copy, copytree, ignore_patterns
 from glob import glob
+from distutils.command.build import build as _build
 try:
     from setuptools import setup, Extension
-except:
+    from setuptools.command.install import install as _install
+    from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
+except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
+    from distutils.command.install import install as _install
+    from distutils.command.bdist_egg import bdist_egg as _bdist_egg
+
+if sys.platform.startswith('win'):
+    from distutils.command.bdist_msi import bdist_msi as _bdist_msi
+    from distutils.command.bdist_wininst import bdist_wininst as _bdist_wininst
 
 extra_compile_args = []
 extra_link_args = []
@@ -110,18 +119,72 @@ ps_swig_opts = (
     ['-outdir', 'pocketsphinx']
 )
 
-rmtree('pocketsphinx/data', True)
-rmtree('pocketsphinx/model', True)
-copytree('deps/pocketsphinx/model/en-us',
-         'pocketsphinx/model',
-         ignore=ignore_patterns('en-us-phone.lm.bin'))
-os.makedirs('pocketsphinx/data')
-copy('deps/pocketsphinx/test/data/goforward.raw',
-     'pocketsphinx/data/goforward.raw')
+if not os.path.exists(os.path.join(os.path.dirname(__file__), 'pocketsphinx/model')):
+    copytree(os.path.join(os.path.dirname(__file__), 'deps/pocketsphinx/model/en-us'),
+             os.path.join(os.path.dirname(__file__), 'pocketsphinx/model'),
+             ignore=ignore_patterns('en-us-phone.lm.bin'))
+if not os.path.exists(os.path.join(os.path.dirname(__file__), 'pocketsphinx/data')):
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'pocketsphinx/data'))
+    copy(os.path.join(os.path.dirname(__file__), 'deps/pocketsphinx/test/data/goforward.raw'),
+         os.path.join(os.path.dirname(__file__), 'pocketsphinx/data/goforward.raw'))
+
+
+class build(_build):
+    def run(self):
+        self.run_command('build_ext')
+        return _build.run(self)
+
+
+class install(_install):
+    def run(self):
+        self.run_command('build_ext')
+        return _install.run(self)
+
+
+class bdist_egg(_bdist_egg):
+    def run(self):
+        self.run_command('build_ext')
+        return _bdist_egg.run(self)
+
+
+cmdclass = {
+    'build': build,
+    'install': install,
+    'bdist_egg': bdist_egg
+}
+
+
+try:
+    from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+except ImportError:
+    pass
+else:
+    class bdist_wheel(_bdist_wheel):
+        def run(self):
+            self.run_command('build_ext')
+            return _bdist_wheel.run(self)
+
+    cmdclass['bdist_wheel'] = bdist_wheel
+
+
+if sys.platform.startswith('win'):
+    class bdist_msi(_bdist_msi):
+        def run(self):
+            self.run_command('build_ext')
+            return _bdist_msi.run(self)
+
+    class bdist_wininst(_bdist_wininst):
+        def run(self):
+            self.run_command('build_ext')
+            return _bdist_wininst.run(self)
+
+    cmdclass['bdist_msi'] = bdist_msi
+    cmdclass['bdist_wininst'] = bdist_wininst
+
 
 setup(
     name='pocketsphinx',
-    version='0.1.1',
+    version='0.1.3',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.rst').read(),
     author='Dmitry Prazdnichnov',
@@ -164,6 +227,7 @@ setup(
             extra_link_args=extra_link_args
         )
     ],
+    cmdclass=cmdclass,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Operating System :: Microsoft :: Windows',

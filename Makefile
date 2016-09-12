@@ -44,16 +44,12 @@ build_sdist: clean
 	$(PYTHON2_X86) setup.py sdist --formats=zip,gztar,bztar
 
 build_egg_py2_x86: clean
-	# Workaround fix inclusion of python modules in the distribution
-	$(PYTHON2_X86) setup.py bdist_egg build
 	$(PYTHON2_X86) setup.py bdist_egg build
 
 build_egg_py3_x86: clean
 	$(PYTHON3_X86) setup.py bdist_egg build
 
 build_egg_py2_x64: clean
-	# Workaround fix inclusion of python modules in the distribution
-	$(PYTHON2_X64) setup.py bdist_egg build
 	$(PYTHON2_X64) setup.py bdist_egg build
 
 build_egg_py3_x64: clean
@@ -123,16 +119,12 @@ upload_sdist: clean
 	$(PYTHON2_X86) setup.py sdist --formats=zip,gztar,bztar upload
 
 upload_egg_py2_x86: clean
-	# Workaround fix inclusion of python modules in the distribution
-	$(PYTHON2_X86) setup.py bdist_egg build
 	$(PYTHON2_X86) setup.py bdist_egg upload
 
 upload_egg_py3_x86: clean
 	$(PYTHON3_X86) setup.py bdist_egg upload
 
 upload_egg_py2_x64: clean
-	# Workaround fix inclusion of python modules in the distribution
-	$(PYTHON2_X64) setup.py bdist_egg build
 	$(PYTHON2_X64) setup.py bdist_egg upload
 
 upload_egg_py3_x64: clean

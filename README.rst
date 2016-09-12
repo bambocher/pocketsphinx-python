@@ -23,6 +23,7 @@ Pocketsphinx Python
     :alt: License
 
 Pocketsphinx is part of the `CMU Sphinx <http://cmusphinx.sourceforge.net>`__ Open Source Toolkit For Speech Recognition.
+
 This package provides python interface to CMU `Sphinxbase <https://github.com/cmusphinx/sphinxbase>`__ and `Pocketsphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with `SWIG <http://www.swig.org>`__ and `Setuptools <https://setuptools.readthedocs.io>`__.
 
 ===================
