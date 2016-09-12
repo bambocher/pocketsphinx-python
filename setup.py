@@ -247,7 +247,7 @@ setup(
         'Topic :: Multimedia :: Sound/Audio :: Speech'
     ],
     license='BSD',
-    keywords=['sphinxbase', 'pocketsphinx'],
+    keywords='sphinxbase pocketsphinx',
     test_suite='tests',
     include_package_data=True,
     zip_safe=False
