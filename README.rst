@@ -22,9 +22,9 @@ Pocketsphinx Python
     :target: https://pypi.python.org/pypi/pocketsphinx
     :alt: License
 
-Pocketsphinx is part of the `CMU Sphinx <http://cmusphinx.sourceforge.net>`__ Open Source Toolkit For Speech Recognition.
+Pocketsphinx is a part of the `CMU Sphinx <http://cmusphinx.sourceforge.net>`__ Open Source Toolkit For Speech Recognition.
 
-This package provides python interface to CMU `Sphinxbase <https://github.com/cmusphinx/sphinxbase>`__ and `Pocketsphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with `SWIG <http://www.swig.org>`__ and `Setuptools <https://setuptools.readthedocs.io>`__.
+This package provides a python interface to CMU `Sphinxbase <https://github.com/cmusphinx/sphinxbase>`__ and `Pocketsphinx <https://github.com/cmusphinx/pocketsphinx>`__ libraries created with `SWIG <http://www.swig.org>`__ and `Setuptools <https://setuptools.readthedocs.io>`__.
 
 ===================
 Supported platforms
@@ -40,12 +40,12 @@ Installation
 
 .. code-block:: bash
 
-    # Make sure we have an up-to-date version of pip, setuptools and wheel:
+    # Make sure we have up-to-date versions of pip, setuptools and wheel:
     $ pip install --upgrade pip setuptools wheel
 
     $ pip install --upgrade pocketsphinx
 
-More binary distributions for manual installation is available `here <https://pypi.python.org/pypi/pocketsphinx>`__.
+More binary distributions for manual installation are available `here <https://pypi.python.org/pypi/pocketsphinx>`__.
 
 =====
 Usage
@@ -55,7 +55,7 @@ Usage
 LiveSpeech
 ----------
 
-LiveSpeech is an iterator class for continuous recognition or search keyword from the microphone.
+It's an iterator class for continuous recognition or keyword search from a microphone.
 
 .. code-block:: python
 
@@ -99,7 +99,7 @@ With your model and dictionary:
 AudioFile
 ---------
 
-AudioFile is an iterator class for continuous recognition or search keyword from a file.
+It's an iterator class for continuous recognition or keyword search from a file.
 
 .. code-block:: python
 
@@ -145,7 +145,7 @@ With your model and dictionary:
 Pocketsphinx
 ------------
 
-Pocketsphinx is a simple and flexible proxy class to pocketsphinx.Decode.
+It's a simple and flexible proxy class to `pocketsphinx.Decode`.
 
 .. code-block:: python
 
@@ -211,7 +211,7 @@ A more comprehensive example:
 Default config
 --------------
 
-If you don't pass arguments when creating an instance of the Pocketsphinx, AudioFile and LiveSpeech classes they take default values:
+If you don't pass any argument while creating an instance of the Pocketsphinx, AudioFile or LiveSpeech class, it will use next default values:
 
 .. code-block:: python
 
@@ -227,9 +227,9 @@ If you don't pass arguments when creating an instance of the Pocketsphinx, Audio
     lm = site-packages/pocketsphinx/model/en-us.lm.bin
     dict = site-packages/pocketsphinx/model/cmudict-en-us.dict
 
-The remaining arguments are passed into the configuration as is, just inserted a hyphen in the beginning.
+Any other option must be passed into the config as is, without using symbol `-`.
 
-If you want to disable default language model or dictionary you can change the value of the corresponding options to False:
+If you want to disable default language model or dictionary, you can change the value of the corresponding options to False:
 
 .. code-block:: python
 
@@ -240,7 +240,7 @@ If you want to disable default language model or dictionary you can change the v
 Verbose
 -------
 
-The pocketsphinx log output to stdout:
+Send output to stdout:
 
 .. code-block:: python
 
@@ -251,7 +251,7 @@ The pocketsphinx log output to stdout:
 
     print(ps.hypothesis())
 
-The pocketsphinx log output to file:
+Send output to file:
 
 .. code-block:: python
 
@@ -276,7 +276,7 @@ Parent classes are still available:
     model_path = get_model_path()
     data_path = get_data_path()
 
-    # Create a decoder with certain model
+    # Create a decoder with a certain model
     config = DefaultConfig()
     config.set_string('-hmm', os.path.join(model_path, 'en-us'))
     config.set_string('-lm', os.path.join(model_path, 'en-us.lm.bin'))
