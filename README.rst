@@ -227,7 +227,7 @@ If you don't pass any argument while creating an instance of the Pocketsphinx, A
     lm = site-packages/pocketsphinx/model/en-us.lm.bin
     dict = site-packages/pocketsphinx/model/cmudict-en-us.dict
 
-Any other option must be passed into the config as is, just prefixed with a hyphen (`-`).
+Any other option must be passed into the config as is, without using symbol `-`.
 
 If you want to disable default language model or dictionary, you can change the value of the corresponding options to False:
 
