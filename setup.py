@@ -119,7 +119,7 @@ ps_sources = (
     ['pocketsphinx/swig/pocketsphinx.i']
 )
 
-swig_opts = ['-modern']
+swig_opts = ['-modern', '-threads']
 
 sb_swig_opts = (
     swig_opts +
