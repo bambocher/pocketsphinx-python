@@ -37,7 +37,7 @@ pip install pocketsphinx
 or
 
 ```bash
-git clone --recursive https://github.com/bambocher/pocketsphinx-python
+git clone --recursive https://github.com/cmusphinx/pocketsphinx-python/
 cd pocketsphinx-python
 python setup.py install
 ```
@@ -65,7 +65,7 @@ or
 
 ```bash
 sudo apt-get install -y python python-dev python-pip build-essential swig git
-git clone --recursive https://github.com/bambocher/pocketsphinx-python
+git clone --recursive https://github.com/cmusphinx/pocketsphinx-python/
 cd pocketsphinx-python
 sudo python setup.py install
 ```
