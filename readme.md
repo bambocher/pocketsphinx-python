@@ -53,11 +53,12 @@ Install on Ubuntu
 - build-essential
 - swig
 - git
+- libpulse-dev
 
 ### Install
 
 ```bash
-sudo apt-get install -y python python-dev python-pip build-essential swig git
+sudo apt-get install -y python python-dev python-pip build-essential swig git libpulse-dev
 sudo pip install pocketsphinx
 ```
 
