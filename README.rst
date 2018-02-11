@@ -263,7 +263,7 @@ Send output to file:
     print(ps.hypothesis())
 
 -------------
-Сompatibility
+Compatibility
 -------------
 
 Parent classes are still available:
