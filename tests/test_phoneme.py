@@ -51,7 +51,7 @@ class TestPhoneme(TestCase):
     def test_phoneme_hypothesis(self):
         self.assertEqual(
             self.ps.hypothesis(),
-            'SIL G OW F AO R W ER D T AE N M IY IH ZH ER Z S V SIL'
+            'SIL G OW F AO R D T AE N NG IY ZH ER S SIL'
         )
 
     def test_phoneme_best_phonemes(self):
@@ -62,19 +62,14 @@ class TestPhoneme(TestCase):
             'F',
             'AO',
             'R',
-            'W',
-            'ER',
             'D',
             'T',
             'AE',
             'N',
-            'M',
+            'NG',
             'IY',
-            'IH',
             'ZH',
             'ER',
-            'Z',
             'S',
-            'V',
             'SIL'
         ])
