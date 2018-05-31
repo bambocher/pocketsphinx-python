@@ -106,14 +106,14 @@ elif sys.platform.startswith('linux'):
     ])
 
 sb_swig_opts = (
-    ['-modern'] +
+    ['-modern', '-threads'] +
     ['-I' + h for h in sb_include_dirs] +
     ['-Ideps/sphinxbase/swig'] +
     ['-outdir', 'sphinxbase']
 )
 
 ps_swig_opts = (
-    ['-modern'] +
+    ['-modern', '-threads'] +
     ['-I' + h for h in sb_include_dirs + ps_include_dirs] +
     ['-Ideps/sphinxbase/swig'] +
     ['-outdir', 'pocketsphinx']
