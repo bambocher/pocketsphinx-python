@@ -184,7 +184,7 @@ if sys.platform.startswith('win'):
 
 setup(
     name='pocketsphinx',
-    version='0.1.4',
+    version='0.1.5',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.rst').read(),
     author='Dmitry Prazdnichnov',
