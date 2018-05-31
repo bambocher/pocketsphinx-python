@@ -1,23 +1,26 @@
 language: python
+cache: apt
 sudo: false
 env:
-- ENABLE_LIBSPHINXAD=1
+  - ENABLE_LIBSPHINXAD=1
 addons:
   apt:
     packages:
     - swig
     - libpulse-dev
 python:
-- '2.7'
-- '3.5'
-- '3.6'
+  - '2.7'
+  - '3.5'
+  - '3.6'
 script:
-- python setup.py test
+  - python setup.py test
 deploy:
+  skip_cleanup: true
   provider: pypi
   user: bambucha
   password:
     secure: QMDxAN4JZANHzCa4b+tmTwjPKxOjRZEY2vreED9WsvnAjwRE52g6QQU4XgwlRUt9zucesH31pxBOi9Kiq6z7B62PF8vjbPTZJLfGPF+nhU/i2V1Qmbxydc6TH53GidLyB6SoktBxNSfSmSQTRM70Wkpm7HPLR6iaJUsNBQSQ7gQ=
   distributions: sdist bdist_wheel
   on:
+    tags: true
     branch: master
