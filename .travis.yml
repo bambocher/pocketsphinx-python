@@ -19,3 +19,5 @@ deploy:
   password:
     secure: V/PMj+ZKcSjQl/6xUulGDJDrNT0Knu2uTCqtPMzSBbPjYvp8xbwPC4CBFSAuhH08/OqhJcTheaRMJlOy8/9lmmjM8IZ+MbND1QTcsgMav1IwHdTpLmHlvAfyjiW17TLkuLzex3lXZp+/iARYPe58QGsCM0CZqsm3CO+wx9ObEvQ=
   distributions: 'sdist bdist_wheel'
+  on:
+    branch: master
