@@ -3,7 +3,8 @@
 [![Latest Version](https://img.shields.io/pypi/v/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
 [![Development Status](https://img.shields.io/pypi/status/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
-[![Build Status](https://travis-ci.org/bambocher/pocketsphinx-python.svg?branch=master)](https://travis-ci.org/bambocher/pocketsphinx-python)
+[![Travis Build Status](https://travis-ci.org/bambocher/pocketsphinx-python.svg?branch=master)](https://travis-ci.org/bambocher/pocketsphinx-python)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)
 [![License](https://img.shields.io/pypi/l/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
 
 Pocketsphinx is a part of the [CMU Sphinx](http://cmusphinx.sourceforge.net) Open Source Toolkit For Speech Recognition.

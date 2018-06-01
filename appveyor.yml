@@ -1,0 +1,31 @@
+environment:
+
+  password:
+    secure: KZdEfjKCVSUL334LJP/iPqWKfzhoIm43D4VZwJcEb0k=
+
+  matrix:
+    - python: C:/Python27
+    - python: C:/Python35
+    - python: C:/Python36
+    - python: C:/Python27-x64
+    - python: C:/Python35-x64
+    - python: C:/Python36-x64
+
+install:
+  - '%python%/python.exe -m pip install --upgrade pip setuptools wheel twine'
+
+build: off
+
+test_script:
+  - build.cmd %python%/python.exe setup.py test
+
+after_test:
+  - build.cmd %python%/python.exe setup.py bdist_wheel
+  - build.cmd %python%/python.exe setup.py bdist_wininst
+  - build.cmd %python%/python.exe setup.py bdist_msi
+
+artifacts:
+  - path: dist/*
+
+on_success:
+  - ps: if ($env:appveyor_repo_tag) {%python%/Scripts/twine upload -u bambucha -p %password% dist/*}
