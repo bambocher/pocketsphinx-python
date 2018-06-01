@@ -64,14 +64,14 @@ except ImportError:
 extra_compile_args = []
 extra_link_args = []
 
-libsphinxbase = (
+libsphinxbase = sorted(
     glob('deps/sphinxbase/src/libsphinxbase/lm/*.c') +
     glob('deps/sphinxbase/src/libsphinxbase/feat/*.c') +
     glob('deps/sphinxbase/src/libsphinxbase/util/*.c') +
     glob('deps/sphinxbase/src/libsphinxbase/fe/*.c')
-)
+))
 
-libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
+libpocketsphinx = sorted(glob('deps/pocketsphinx/src/libpocketsphinx/*.c'))
 
 sb_sources = (
     libsphinxbase +
