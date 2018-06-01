@@ -7,4 +7,4 @@ recursive-include deps/pocketsphinx/src/libpocketsphinx *.c *.h
 global-include *.i
 graft pocketsphinx/model
 graft pocketsphinx/data
-include README.rst LICENSE
+include README.md LICENSE
