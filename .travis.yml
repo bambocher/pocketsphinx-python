@@ -1,22 +1,33 @@
 language: python
-
-cache: apt
-
 sudo: false
 
 env:
-  - ENABLE_LIBSPHINXAD=1
+  matrix:
+    - ENABLE_LIBSPHINXAD=1
+  global:
+    secure: kRjum2tZsaQZPnti27bc/ZIjYS1hftXTyuSWdq/6raRignORgbZMUc/RMXBz+ig8kiEVE3SFBZdapECGj+3Vb6Q6Vi4ypv8lR4rtJMTNITSOeM1KHHDCi6xLLGKrOsJ5ndkYHTNxuyIMGZu9Sv3TMcNqHcBChbZKT383OXgrxLA=
 
-addons:
-  apt:
-    packages:
-    - swig
-    - libpulse-dev
+matrix:
+  include:
+  - os: osx
+    python: 2.7
+  - os: osx
+    python: 3.5
+  - os: osx
+    python: 3.6
+  - os: linux
+    python: 2.7
+  - os: linux
+    python: 3.5
+  - os: linux
+    python: 3.6
+    env: BUILD_SDIST=true
 
-python:
-  - '2.7'
-  - '3.5'
-  - '3.6'
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev; fi
 
 install:
   - python -m pip install --upgrade pip setuptools wheel twine
@@ -24,13 +35,14 @@ install:
 script:
   - python setup.py test
 
+after_script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python setup.py bdist_wheel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_SDIST" == "true" ]]; then python setup.py sdist; fi
+
 deploy:
-  skip_cleanup: true
-  provider: pypi
-  user: bambucha
-  password:
-    secure: QMDxAN4JZANHzCa4b+tmTwjPKxOjRZEY2vreED9WsvnAjwRE52g6QQU4XgwlRUt9zucesH31pxBOi9Kiq6z7B62PF8vjbPTZJLfGPF+nhU/i2V1Qmbxydc6TH53GidLyB6SoktBxNSfSmSQTRM70Wkpm7HPLR6iaJUsNBQSQ7gQ=
-  distributions: sdist
-  on:
-    tags: true
-    branch: master
+  - provider: script
+    script: twine upload -u bambucha -p $PASSWORD dist/*
+    on:
+      tags: true
+      branch: master
+    skip_cleanup: true
