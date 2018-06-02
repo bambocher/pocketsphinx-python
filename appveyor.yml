@@ -5,30 +5,36 @@ environment:
     secure: KZdEfjKCVSUL334LJP/iPqWKfzhoIm43D4VZwJcEb0k=
 
   matrix:
-    - python: C:/Python27
-    - python: C:/Python35
-    - python: C:/Python36
-    - python: C:/Python27-x64
-    - python: C:/Python35-x64
-    - python: C:/Python36-x64
+    - python: C:/Python27/python.exe
+      twine: C:/Python27/Scripts/twine.exe
+    - python: C:/Python35/python.exe
+      twine: C:/Python35/Scripts/twine.exe
+    - python: C:/Python36/python.exe
+      twine: C:/Python36/Scripts/twine.exe
+    - python: C:/Python27-x64/python.exe
+      twine: C:/Python27-x64/Scripts/twine.exe
+    - python: C:/Python35-x64/python.exe
+      twine: C:/Python35-x64/Scripts/twine.exe
+    - python: C:/Python36-x64/python.exe
+      twine: C:/Python36-x64/Scripts/twine.exe
 
 install:
-  - git submodule update --init --recursive
-  - '%python%/python.exe -m pip install --upgrade pip setuptools wheel twine'
-  - choco install -y swig
+  - ps: git submodule update --init --recursive
+  - ps: $env:python -m pip install --upgrade pip setuptools wheel twine
+  - ps: choco install -y swig
 
 build: off
 
 test_script:
-  - '%python%/python.exe setup.py test'
+  - ps: $env:python setup.py test
 
 after_test:
-  - '%python%/python.exe setup.py bdist_wheel'
-  - '%python%/python.exe setup.py bdist_wininst'
-  - '%python%/python.exe setup.py bdist_msi'
+  - ps: $env:python setup.py bdist_wheel
+  - ps: $env:python setup.py bdist_wininst
+  - ps: $env:python setup.py bdist_msi
 
 artifacts:
   - path: dist/*
 
 on_success:
-  - ps: if ($env:appveyor_repo_tag -eq $true) {$env:python/Scripts/twine.exe upload -u bambucha -p %password% dist/*}
+  - ps: if ($env:appveyor_repo_tag -eq $true) {$env:twine upload -u bambucha -p %password% dist/*}
