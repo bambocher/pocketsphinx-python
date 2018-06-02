@@ -1,7 +1,5 @@
 version: 1.0.{build}
 
-skip_non_tags: true
-
 environment:
   password:
     secure: KZdEfjKCVSUL334LJP/iPqWKfzhoIm43D4VZwJcEb0k=
@@ -33,4 +31,4 @@ artifacts:
   - path: dist/*
 
 on_success:
-  - '%python%/Scripts/twine.exe upload -u bambucha -p %password% dist/*'
+  - ps: if ($env:appveyor_repo_tag) {%python%/Scripts/twine.exe upload -u bambucha -p %password% dist/*}
