@@ -4,7 +4,7 @@ import sys
 from shutil import copy, copytree, ignore_patterns
 from glob import glob
 
-from distutils import log, msvc9compiler
+from distutils import log
 from distutils.command.build import build as _build
 try:
     from setuptools import setup, Extension
@@ -52,7 +52,11 @@ def _find_vcvarsall(version):
     log.debug("Unable to find vcvarsall.bat")
     return None
 
-msvc9compiler.find_vcvarsall = _find_vcvarsall
+try:
+    from distutils import msvc9compiler
+    msvc9compiler.find_vcvarsall = _find_vcvarsall
+except ImportError:
+    pass
 
 extra_compile_args = []
 extra_link_args = []
