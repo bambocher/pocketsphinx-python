@@ -18,7 +18,7 @@ init:
 
 install:
   - git submodule update --init --recursive
-  - choco install -y swig
+  - choco install -y swig --allow-empty-checksums
   - python -m pip install --upgrade pip setuptools wheel twine
 
 build: off
