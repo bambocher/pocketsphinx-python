@@ -224,7 +224,7 @@ if sys.platform.startswith('win'):
 
 setup(
     name='pocketsphinx',
-    version='0.1.7',
+    version='0.1.8',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
