@@ -5,36 +5,52 @@ environment:
     secure: KZdEfjKCVSUL334LJP/iPqWKfzhoIm43D4VZwJcEb0k=
 
   matrix:
-    - python: C:/Python27/python.exe
-      twine: C:/Python27/Scripts/twine.exe
-    - python: C:/Python35/python.exe
-      twine: C:/Python35/Scripts/twine.exe
-    - python: C:/Python36/python.exe
-      twine: C:/Python36/Scripts/twine.exe
-    - python: C:/Python27-x64/python.exe
-      twine: C:/Python27-x64/Scripts/twine.exe
-    - python: C:/Python35-x64/python.exe
-      twine: C:/Python35-x64/Scripts/twine.exe
-    - python: C:/Python36-x64/python.exe
-      twine: C:/Python36-x64/Scripts/twine.exe
+    - PYTHON: C:\Python27
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x86
+    - PYTHON: C:\Python35
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x86
+    - PYTHON: C:\Python36
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x86
+    - PYTHON: C:\Python27-x64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x64
+    - PYTHON: C:\Python35-x64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x64
+    - PYTHON: C:\Python36-x64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
+      VCVARSALLARCH: x64
+
+init:
+  - call %VCVARSALLPATH% %VCVARSALLARCH%
+  - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
 
 install:
-  - ps: git submodule update --init --recursive
-  - ps: $env:python -m pip install --upgrade pip setuptools wheel twine
-  - ps: choco install -y swig
+  - git submodule update --init --recursive
+  - choco install -y swig
+  - python -m pip install --upgrade pip setuptools wheel twine
 
 build: off
 
 test_script:
-  - ps: $env:python setup.py test
+  - python setup.py test
 
 after_test:
-  - ps: $env:python setup.py bdist_wheel
-  - ps: $env:python setup.py bdist_wininst
-  - ps: $env:python setup.py bdist_msi
+  - python setup.py bdist_wheel
+  - python setup.py bdist_wininst
+  - python setup.py bdist_msi
 
 artifacts:
   - path: dist/*
 
 on_success:
-  - ps: if ($env:appveyor_repo_tag -eq $true) {$env:twine upload -u bambucha -p %password% dist/*}
+  - ps: if ($env:appveyor_repo_tag -eq $true) {twine upload -u bambucha -p $env:password dist/*}
