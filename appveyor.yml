@@ -13,10 +13,6 @@ environment:
     - PYTHON: C:\Python36-x64
 
 init:
-  - reg delete "HKLM\Software\Wow6432Node\Microsoft\VisualStudio\9.0\Setup\VC\ProductDir" /f
-  - reg delete "HKLM\Software\Wow6432Node\Microsoft\VCExpress\9.0\Setup\VC\ProductDir" /f
-  - reg delete "HKLM\Software\Microsoft\VisualStudio\9.0\Setup\VC\ProductDir" /f
-  - reg delete "HKLM\Software\Microsoft\VCExpress\9.0\Setup\VC\ProductDir" /f
   - set VS90COMNTOOLS=%VS140COMNTOOLS%
   - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
 
@@ -39,4 +35,4 @@ artifacts:
   - path: dist/*
 
 on_success:
-  - ps: if ($env:appveyor_repo_tag -eq $true) {twine upload -u bambucha -p $env:password dist/*}
+  - if %APPVEYOR_REPO_TAG%==true twine upload -u bambucha -p $env:password dist/*

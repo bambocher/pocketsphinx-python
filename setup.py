@@ -3,6 +3,8 @@ import os
 import sys
 from shutil import copy, copytree, ignore_patterns
 from glob import glob
+
+from distutils import log, msvc9compiler
 from distutils.command.build import build as _build
 try:
     from setuptools import setup, Extension
@@ -17,6 +19,40 @@ except ImportError:
 if sys.platform.startswith('win'):
     from distutils.command.bdist_msi import bdist_msi as _bdist_msi
     from distutils.command.bdist_wininst import bdist_wininst as _bdist_wininst
+
+def _find_vcvarsall(version):
+    vsbase = msvc9compiler.VS_BASE % version
+    productdir = None
+    
+    if version != 9.0:
+        try:
+            productdir = msvc9compiler.Reg.get_value(r"%s\Setup\VC" % vsbase,
+                                       "productdir")
+        except KeyError:
+            log.debug("Unable to find productdir in registry")
+
+    if not productdir or not os.path.isdir(productdir):
+        toolskey = "VS%0.f0COMNTOOLS" % version
+        toolsdir = os.environ.get(toolskey, None)
+
+        if toolsdir and os.path.isdir(toolsdir):
+            productdir = os.path.join(toolsdir, os.pardir, os.pardir, "VC")
+            productdir = os.path.abspath(productdir)
+            if not os.path.isdir(productdir):
+                log.debug("%s is not a valid directory" % productdir)
+                return None
+        else:
+            log.debug("Env var %s is not set or invalid" % toolskey)
+    if not productdir:
+        log.debug("No productdir found")
+        return None
+    vcvarsall = os.path.join(productdir, "vcvarsall.bat")
+    if os.path.isfile(vcvarsall):
+        return vcvarsall
+    log.debug("Unable to find vcvarsall.bat")
+    return None
+
+msvc9compiler.find_vcvarsall = _find_vcvarsall
 
 extra_compile_args = []
 extra_link_args = []
