@@ -6,32 +6,14 @@ environment:
 
   matrix:
     - PYTHON: C:\Python27
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x86
     - PYTHON: C:\Python35
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x86
     - PYTHON: C:\Python36
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x86
     - PYTHON: C:\Python27-x64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x64
     - PYTHON: C:\Python35-x64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x64
     - PYTHON: C:\Python36-x64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio 14.0"\VC\vcvarsall.bat
-      VCVARSALLARCH: x64
 
 init:
-  - call %VCVARSALLPATH% %VCVARSALLARCH%
+  - set VS90COMNTOOLS=%VS140COMNTOOLS%
   - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
 
 install:
