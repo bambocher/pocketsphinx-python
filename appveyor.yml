@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 0.1.7 ({build})
 
 environment:
   password:
@@ -31,4 +31,4 @@ artifacts:
   - path: dist/*
 
 on_success:
-  - ps: if ($env:appveyor_repo_tag) {%python%/Scripts/twine.exe upload -u bambucha -p %password% dist/*}
+  - ps: if ($env:appveyor_repo_tag -eq $true) {$env:python/Scripts/twine.exe upload -u bambucha -p %password% dist/*}
