@@ -41,7 +41,7 @@ after_script:
 
 deploy:
   - provider: script
-    script: twine upload -u bambucha -p $PASSWORD dist/*
+    script: twine upload -u bambucha -p $PASSWORD $TRAVIS_BUILD_DIR/dist/*
     on:
       tags: true
       branch: master

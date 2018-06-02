@@ -1,7 +1,7 @@
 version: 0.1.8 ({build})
 
 environment:
-  password:
+  PASSWORD:
     secure: KZdEfjKCVSUL334LJP/iPqWKfzhoIm43D4VZwJcEb0k=
 
   matrix:
@@ -35,4 +35,4 @@ artifacts:
   - path: dist/*
 
 on_success:
-  - if %APPVEYOR_REPO_TAG%==true twine upload -u bambucha -p $env:password dist/*
+  - if %APPVEYOR_REPO_TAG%==true twine upload -u bambucha -p %PASSWORD% dist/*
