@@ -16,12 +16,12 @@ install:
 build: off
 
 test_script:
-  - %python%/python.exe setup.py test
+  - '%python%/python.exe setup.py test'
 
 after_test:
-  - %python%/python.exe setup.py bdist_wheel
-  - %python%/python.exe setup.py bdist_wininst
-  - %python%/python.exe setup.py bdist_msi
+  - '%python%/python.exe setup.py bdist_wheel'
+  - '%python%/python.exe setup.py bdist_wininst'
+  - '%python%/python.exe setup.py bdist_msi'
 
 artifacts:
   - path: dist/*
