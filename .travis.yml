@@ -32,7 +32,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev; fi
 
 install:
-  - $PYTHON -m pip install --upgrade pip setuptools wheel twine
+  - $PYTHON -m pip install --user --upgrade pip setuptools wheel twine
 
 script:
   - $PYTHON setup.py test
@@ -43,7 +43,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: twine upload -u bambucha -p $PASSWORD dist/*
+  script: $PYTHON -m twine upload -u bambucha -p $PASSWORD dist/*
   on:
     tags: true
     branch: master
