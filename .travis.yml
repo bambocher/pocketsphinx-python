@@ -28,11 +28,13 @@ matrix:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall swig python python@2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin:$PATH; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev; fi
 
 install:
-  - $PYTHON -m pip install --user --upgrade pip setuptools wheel twine
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then $PYTHON -m pip install --user --upgrade pip setuptools wheel twine; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PYTHON -m pip install --upgrade pip setuptools wheel twine; fi
 
 script:
   - $PYTHON setup.py test
@@ -43,7 +45,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: $PYTHON -m twine upload -u bambucha -p $PASSWORD dist/*
+  script: twine upload -u bambucha -p $PASSWORD dist/*
   on:
     tags: true
     branch: master
