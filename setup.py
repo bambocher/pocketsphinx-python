@@ -205,7 +205,7 @@ ext_modules = [
         include_dirs=sb_include_dirs,
         define_macros=define_macros,
         extra_compile_args=extra_compile_args,
-        extra_link_args=extra_link_args,
+        extra_link_args=extra_link_args
     ),
     Extension(
         name='pocketsphinx._pocketsphinx',
@@ -228,7 +228,7 @@ if sys.platform.startswith('win'):
             libraries=['winmm'],
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
+            extra_link_args=extra_link_args
         )
     )
 elif sys.platform.startswith('darwin'):
@@ -241,7 +241,7 @@ elif sys.platform.startswith('darwin'):
             extra_objects=['/System/Library/Frameworks/OpenAL.framework/Versions/A/OpenAL'],
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
+            extra_link_args=extra_link_args
         )
     )
 elif sys.platform.startswith('linux'):
@@ -254,7 +254,7 @@ elif sys.platform.startswith('linux'):
             libraries=['pulse', 'pulse-simple'],
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
+            extra_link_args=extra_link_args
         ),
         Extension(
             name='sphinxbase._ad_alsa',
@@ -264,13 +264,13 @@ elif sys.platform.startswith('linux'):
             libraries=['asound'],
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
+            extra_link_args=extra_link_args
         )
     )
 
 setup(
     name='pocketsphinx',
-    version='0.1.13',
+    version='0.1.14',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
