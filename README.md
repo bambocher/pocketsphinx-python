@@ -43,7 +43,7 @@ An example of a keyword search:
 ```python
 from pocketsphinx import LiveSpeech
 
-speech = LiveSpeech(lm=False, keyphrase='forward', kws_threshold=1e+20)
+speech = LiveSpeech(lm=False, keyphrase='forward', kws_threshold=1e-20)
 for phrase in speech:
     print(phrase.segments(detailed=True))
 ```
@@ -85,7 +85,7 @@ An example of a keyword search:
 ```python
 from pocketsphinx import AudioFile
 
-audio = AudioFile(lm=False, keyphrase='forward', kws_threshold=1e+20)
+audio = AudioFile(lm=False, keyphrase='forward', kws_threshold=1e-20)
 for phrase in audio:
     print(phrase.segments(detailed=True)) # => "[('forward', -617, 63, 121)]"
 ```
