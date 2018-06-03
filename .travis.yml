@@ -53,12 +53,12 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python setup.py test; fi
 
 before_deploy:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" || "$BUILD_SDIST" == "true" ]]; then python2 setup.py sdist; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" || "$BUILD_WHEEL" == "true" ]]; then python2 setup.py bdist_wheel; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" || "$BUILD_SDIST" == "true" ]]; then python3 setup.py sdist; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" || "$BUILD_WHEEL" == "true" ]]; then python3 setup.py bdist_wheel; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" || "$BUILD_SDIST" == "true" ]]; then python setup.py sdist; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" || "$BUILD_WHEEL" == "true" ]]; then python setup.py bdist_wheel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$BUILD_SDIST" == "true" ]]; then python2 setup.py sdist; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$BUILD_WHEEL" == "true" ]]; then python2 setup.py bdist_wheel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$BUILD_SDIST" == "true" ]]; then python3 setup.py sdist; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && "$BUILD_WHEEL" == "true" ]]; then python3 setup.py bdist_wheel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_SDIST" == "true" ]]; then python setup.py sdist; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_WHEEL" == "true" ]]; then python setup.py bdist_wheel; fi
 
 deploy:
   provider: script
