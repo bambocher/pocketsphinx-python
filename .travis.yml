@@ -35,14 +35,14 @@ install:
 script:
   - python setup.py test
 
-after_script:
+before_deploy:
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python setup.py bdist_wheel; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_SDIST" == "true" ]]; then python setup.py sdist; fi
 
 deploy:
-  - provider: script
-    script: twine upload -u bambucha -p $PASSWORD $TRAVIS_BUILD_DIR/dist/*
-    on:
-      tags: true
-      branch: master
-    skip_cleanup: true
+  provider: script
+  script: twine upload -u bambucha -p $PASSWORD dist/*
+  on:
+    tags: true
+    branch: master
+  skip_cleanup: true
