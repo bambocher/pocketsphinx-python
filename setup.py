@@ -20,6 +20,7 @@ if sys.platform.startswith('win'):
     from distutils.command.bdist_msi import bdist_msi as _bdist_msi
     from distutils.command.bdist_wininst import bdist_wininst as _bdist_wininst
 
+
 def _find_vcvarsall(version):
     vsbase = msvc9compiler.VS_BASE % version
     productdir = None
@@ -52,11 +53,13 @@ def _find_vcvarsall(version):
     log.debug("Unable to find vcvarsall.bat")
     return None
 
+
 try:
     from distutils import msvc9compiler
     msvc9compiler.find_vcvarsall = _find_vcvarsall
 except ImportError:
     pass
+
 
 extra_compile_args = []
 extra_link_args = []
@@ -224,7 +227,7 @@ if sys.platform.startswith('win'):
 
 setup(
     name='pocketsphinx',
-    version='0.1.9',
+    version='0.1.10',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -233,7 +236,7 @@ setup(
     maintainer='Dmitry Prazdnichnov',
     maintainer_email='dp@bambucha.org',
     url='https://github.com/bambocher/pocketsphinx-python',
-    download_url='https://pypi.python.org/pypi/pocketsphinx',
+    download_url='https://pypi.org/project/pocketsphinx/#files',
     packages=['sphinxbase', 'pocketsphinx'],
     ext_modules=[
         Extension(
