@@ -29,7 +29,6 @@ test_script:
 after_test:
   - python setup.py bdist_wheel
   - python setup.py bdist_wininst
-  - python setup.py bdist_msi
 
 artifacts:
   - path: dist/*
