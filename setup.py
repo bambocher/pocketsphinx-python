@@ -232,12 +232,13 @@ if sys.platform.startswith('win'):
         )
     )
 elif sys.platform.startswith('darwin'):
+    sb_include_dirs.append('/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers')
     ext_modules.append(
         Extension(
             name='sphinxbase._ad_openal',
             sources=['swig/sphinxbase/ad_openal.i', 'deps/sphinxbase/src/libsphinxad/ad_openal.c'],
             swig_opts=sb_swig_opts,
-            include_dirs=sb_include_dirs.append('/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers'),
+            include_dirs=sb_include_dirs,
             extra_objects=['/System/Library/Frameworks/OpenAL.framework/Versions/A/OpenAL'],
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
@@ -245,7 +246,7 @@ elif sys.platform.startswith('darwin'):
         )
     )
 elif sys.platform.startswith('linux'):
-    ext_modules.append(
+    ext_modules.extend([
         Extension(
             name='sphinxbase._ad_pulse',
             sources=['swig/sphinxbase/ad_pulse.i', 'deps/sphinxbase/src/libsphinxad/ad_pulse.c'],
@@ -266,11 +267,11 @@ elif sys.platform.startswith('linux'):
             extra_compile_args=extra_compile_args,
             extra_link_args=extra_link_args
         )
-    )
+    ])
 
 setup(
     name='pocketsphinx',
-    version='0.1.14',
+    version='0.1.15',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
