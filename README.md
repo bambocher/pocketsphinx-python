@@ -1,11 +1,11 @@
 # Pocketsphinx Python
 
-[![Latest Version](https://img.shields.io/pypi/v/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
-[![Development Status](https://img.shields.io/pypi/status/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
+[![Latest Version](https://img.shields.io/pypi/v/pocketsphinx.svg?maxAge=86400)](https://pypi.org/project/pocketsphinx)
+[![Development Status](https://img.shields.io/pypi/status/pocketsphinx.svg?maxAge=86400)](https://pypi.org/project/pocketsphinx)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/pocketsphinx.svg?maxAge=86400)](https://pypi.org/project/pocketsphinx)
 [![Travis Build Status](https://travis-ci.org/bambocher/pocketsphinx-python.svg?branch=master)](https://travis-ci.org/bambocher/pocketsphinx-python)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/v2rvnt181dox00jr/branch/master?svg=true)](https://ci.appveyor.com/project/bambocher/pocketsphinx-python/branch/master)
-[![License](https://img.shields.io/pypi/l/pocketsphinx.svg?maxAge=86400)](https://pypi.python.org/pypi/pocketsphinx)
+[![License](https://img.shields.io/pypi/l/pocketsphinx.svg?maxAge=86400)](https://pypi.org/project/pocketsphinx)
 
 Pocketsphinx is a part of the [CMU Sphinx](http://cmusphinx.sourceforge.net) Open Source Toolkit For Speech Recognition.
 
@@ -25,7 +25,7 @@ python -m pip install --upgrade pip setuptools wheel
 pip install --upgrade pocketsphinx
 ```
 
-More binary distributions for manual installation are available [here](https://pypi.python.org/pypi/pocketsphinx).
+More binary distributions for manual installation are available [here](https://pypi.org/project/pocketsphinx/#files).
 
 ## Usage
 
