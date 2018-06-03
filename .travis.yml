@@ -9,12 +9,12 @@ env:
 
 matrix:
   include:
-#  - os: osx
-#    python: 2.7
-#  - os: osx
-#    python: 3.5
-#  - os: osx
-#    python: 3.6
+  - os: osx
+    python: 2.7
+  - os: osx
+    python: 3.5
+  - os: osx
+    python: 3.6
   - os: linux
     python: 2.7
   - os: linux
@@ -24,8 +24,8 @@ matrix:
     env: BUILD_SDIST=true ENABLE_LIBSPHINXAD=1
 
 before_install:
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev; fi
 
@@ -36,7 +36,7 @@ script:
   - python setup.py test
 
 before_deploy:
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python setup.py bdist_wheel; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python setup.py bdist_wheel; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && "$BUILD_SDIST" == "true" ]]; then python setup.py sdist; fi
 
 deploy:
