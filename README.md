@@ -115,6 +115,35 @@ for phrase in audio:
     print(phrase)
 ```
 
+Convert frame into time coordinates:
+
+```python
+from pocketsphinx import AudioFile
+
+# Frames per Second
+fps = 100
+
+for phrase in AudioFile(frate=fps):  # frate (default=100)
+    print('-' * 28)
+    print('| %5s |  %3s  |   %4s   |' % ('start', 'end', 'word'))
+    print('-' * 28)
+    for s in phrase.seg():
+        print('| %4ss | %4ss | %8s |' % (s.start_frame / fps, s.end_frame / fps, s.word))
+    print('-' * 28)
+
+# ----------------------------
+# | start |  end  |   word   |
+# ----------------------------
+# |  0.0s | 0.24s | <s>      |
+# | 0.25s | 0.45s | <sil>    |
+# | 0.46s | 0.63s | go       |
+# | 0.64s | 1.16s | forward  |
+# | 1.17s | 1.52s | ten      |
+# | 1.53s | 2.11s | meters   |
+# | 2.12s |  2.6s | </s>     |
+# ----------------------------
+```
+
 ### Pocketsphinx
 
 It's a simple and flexible proxy class to `pocketsphinx.Decode`.
