@@ -63,8 +63,6 @@ except ImportError:
 
 extra_compile_args = []
 extra_link_args = []
-extra_objects = []
-libraries = []
 
 libsphinxbase = (
     glob('deps/sphinxbase/src/libsphinxbase/lm/*.c') +
@@ -74,8 +72,6 @@ libsphinxbase = (
 )
 
 libpocketsphinx = glob('deps/pocketsphinx/src/libpocketsphinx/*.c')
-
-ad_sources = ['swig/sphinxbase/ad.i']
 
 sb_sources = (
     libsphinxbase +
@@ -103,9 +99,7 @@ define_macros = [
 ]
 
 if sys.platform.startswith('win'):
-    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_win32.c')
     sb_include_dirs.append('deps/sphinxbase/include/win32')
-    libraries.append('winmm')
     extra_compile_args.extend([
         '/wd4244',
         '/wd4267',
@@ -120,23 +114,14 @@ if sys.platform.startswith('win'):
     ])
     extra_link_args.append('/ignore:4197')
 elif sys.platform.startswith('darwin'):
-    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_openal.c')
-    sb_include_dirs.extend([
-        '/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers',
-        'deps/sphinxbase/include/android'
-    ])
-    extra_objects.extend([
-        '/System/Library/Frameworks/OpenAL.framework/Versions/A/OpenAL'
-    ])
+    sb_include_dirs.append('deps/sphinxbase/include/android')
     extra_compile_args.extend([
         '-Wno-macro-redefined',
         '-Wno-sign-compare',
         '-Wno-logical-op-parentheses'
     ])
 elif sys.platform.startswith('linux'):
-    ad_sources.append('deps/sphinxbase/src/libsphinxad/ad_pulse.c')
     sb_include_dirs.append('deps/sphinxbase/include/android')
-    libraries.extend(['pulse', 'pulse-simple'])
     extra_compile_args.extend([
         '-Wno-unused-label',
         '-Wno-strict-prototypes',
@@ -212,9 +197,80 @@ if sys.platform.startswith('win'):
     cmdclass['bdist_wininst'] = bdist_wininst
 
 
+ext_modules = [
+    Extension(
+        name='sphinxbase._sphinxbase',
+        sources=sb_sources,
+        swig_opts=sb_swig_opts,
+        include_dirs=sb_include_dirs,
+        define_macros=define_macros,
+        extra_compile_args=extra_compile_args,
+        extra_link_args=extra_link_args,
+    ),
+    Extension(
+        name='pocketsphinx._pocketsphinx',
+        sources=ps_sources,
+        swig_opts=ps_swig_opts,
+        include_dirs=sb_include_dirs + ps_include_dirs,
+        define_macros=define_macros,
+        extra_compile_args=extra_compile_args,
+        extra_link_args=extra_link_args
+    )
+]
+
+if sys.platform.startswith('win'):
+    ext_modules.append(
+        Extension(
+            name='sphinxbase._ad_win32',
+            sources=['swig/sphinxbase/ad_win32.i', 'deps/sphinxbase/src/libsphinxad/ad_win32.c'],
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs,
+            libraries=['winmm'],
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+        )
+    )
+elif sys.platform.startswith('darwin'):
+    ext_modules.append(
+        Extension(
+            name='sphinxbase._ad_openal',
+            sources=['swig/sphinxbase/ad_openal.i', 'deps/sphinxbase/src/libsphinxad/ad_openal.c'],
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs.append('/System/Library/Frameworks/OpenAL.framework/Versions/A/Headers'),
+            extra_objects=['/System/Library/Frameworks/OpenAL.framework/Versions/A/OpenAL'],
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+        )
+    )
+elif sys.platform.startswith('linux'):
+    ext_modules.append(
+        Extension(
+            name='sphinxbase._ad_pulse',
+            sources=['swig/sphinxbase/ad_pulse.i', 'deps/sphinxbase/src/libsphinxad/ad_pulse.c'],
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs,
+            libraries=['pulse', 'pulse-simple'],
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+        ),
+        Extension(
+            name='sphinxbase._ad_alsa',
+            sources=['swig/sphinxbase/ad_alsa.i', 'deps/sphinxbase/src/libsphinxad/ad_alsa.c'],
+            swig_opts=sb_swig_opts,
+            include_dirs=sb_include_dirs,
+            libraries=['asound'],
+            define_macros=define_macros,
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+        )
+    )
+
 setup(
     name='pocketsphinx',
-    version='0.1.12',
+    version='0.1.13',
     description='Python interface to CMU Sphinxbase and Pocketsphinx libraries',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -225,39 +281,7 @@ setup(
     url='https://github.com/bambocher/pocketsphinx-python',
     download_url='https://pypi.org/project/pocketsphinx/#files',
     packages=['sphinxbase', 'pocketsphinx'],
-    ext_modules=[
-        Extension(
-            name='sphinxbase._ad',
-            sources=ad_sources,
-            swig_opts=sb_swig_opts,
-            include_dirs=sb_include_dirs,
-            extra_objects=extra_objects,
-            libraries=libraries,
-            define_macros=define_macros,
-            extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
-        ),
-        Extension(
-            name='sphinxbase._sphinxbase',
-            sources=sb_sources,
-            swig_opts=sb_swig_opts,
-            include_dirs=sb_include_dirs,
-            extra_objects=extra_objects,
-            define_macros=define_macros,
-            extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args,
-        ),
-        Extension(
-            name='pocketsphinx._pocketsphinx',
-            sources=ps_sources,
-            swig_opts=ps_swig_opts,
-            include_dirs=sb_include_dirs + ps_include_dirs,
-            extra_objects=extra_objects,
-            define_macros=define_macros,
-            extra_compile_args=extra_compile_args,
-            extra_link_args=extra_link_args
-        )
-    ],
+    ext_modules=ext_modules,
     cmdclass=cmdclass,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

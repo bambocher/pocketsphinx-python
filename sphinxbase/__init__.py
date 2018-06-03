@@ -29,5 +29,16 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from .ad import *
+import sys
+
+if sys.platform.startswith('win'):
+    from .ad_win32 import *
+elif sys.platform.startswith('darwin'):
+    from .ad_openal import *
+elif sys.platform.startswith('linux'):
+    try:
+        from .ad_pulse import *
+    except:
+        from .ad_alsa import *
+
 from .sphinxbase import *

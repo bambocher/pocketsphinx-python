@@ -40,7 +40,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall swig python python@2; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$HOME/Library/Python/3.6/bin:$PATH; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y swig libpulse-dev libasound2-dev; fi
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python2 -m pip install --user --upgrade pip setuptools wheel twine; fi

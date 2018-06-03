@@ -301,7 +301,7 @@ Windows requirements:
 Ubuntu requirements:
 
 ```shell
-sudo apt-get install -qq python python-dev python-pip build-essential swig git libpulse-dev
+sudo apt-get install -qq python python-dev python-pip build-essential swig git libpulse-dev libasound2-dev
 ```
 
 ### Install with pip
