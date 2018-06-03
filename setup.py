@@ -184,16 +184,9 @@ class install(_install):
         return _install.run(self)
 
 
-class bdist_egg(_bdist_egg):
-    def run(self):
-        self.run_command('build_ext')
-        return _bdist_egg.run(self)
-
-
 cmdclass = {
     'build': build,
     'install': install,
-    'bdist_egg': bdist_egg
 }
 
 
@@ -211,17 +204,11 @@ else:
 
 
 if sys.platform.startswith('win'):
-    class bdist_msi(_bdist_msi):
-        def run(self):
-            self.run_command('build_ext')
-            return _bdist_msi.run(self)
-
     class bdist_wininst(_bdist_wininst):
         def run(self):
             self.run_command('build_ext')
             return _bdist_wininst.run(self)
 
-    cmdclass['bdist_msi'] = bdist_msi
     cmdclass['bdist_wininst'] = bdist_wininst
 
 
