@@ -304,6 +304,12 @@ Ubuntu requirements:
 sudo apt-get install -qq python python-dev python-pip build-essential swig git libpulse-dev libasound2-dev
 ```
 
+Mac OS X requirements:
+
+```shell
+brew reinstall swig python
+```
+
 ### Install with pip
 
 ```shell
