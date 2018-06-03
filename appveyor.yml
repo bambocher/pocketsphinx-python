@@ -1,4 +1,4 @@
-version: 0.1.10 ({build})
+version: 0.1.11 ({build})
 
 environment:
   PASSWORD:
