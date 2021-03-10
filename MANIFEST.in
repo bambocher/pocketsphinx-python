@@ -1,21 +1,10 @@
-prune build
-prune dist
-recursive-include sphinxbase/include *.h
-recursive-include sphinxbase/src *.c
-recursive-include sphinxbase/src *.h
-recursive-include sphinxbase/swig *.i
-prune sphinxbase/include/wince
-prune sphinxbase/include/android
-prune sphinxbase/src/sphinx_adtools
-prune sphinxbase/src/sphinx_cepview
-prune sphinxbase/src/sphinx_fe
-prune sphinxbase/src/sphinx_jsgf2fsg
-prune sphinxbase/src/sphinx_lmtools
-recursive-include pocketsphinx/include *.h
-recursive-include pocketsphinx/src *.c
-recursive-include pocketsphinx/src *.h
-recursive-include pocketsphinx/swig *.i
-prune pocketsphinx/src/gst-plugin
-prune pocketsphinx/src/programs
-include readme.md
-recursive-include include *.h
+recursive-include deps/sphinxbase/include *.h
+prune deps/sphinxbase/include/wince
+recursive-include deps/sphinxbase/src/libsphinxad *.c
+recursive-include deps/sphinxbase/src/libsphinxbase *.c *.h
+recursive-include deps/pocketsphinx/include *.h
+recursive-include deps/pocketsphinx/src/libpocketsphinx *.c *.h
+global-include *.i
+graft pocketsphinx/model
+graft pocketsphinx/data
+include README.md LICENSE
