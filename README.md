@@ -7,6 +7,9 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/v2rvnt181dox00jr/branch/master?svg=true)](https://ci.appveyor.com/project/bambocher/pocketsphinx-python/branch/master)
 [![License](https://img.shields.io/pypi/l/pocketsphinx.svg?maxAge=86400)](https://pypi.org/project/pocketsphinx)
 
+> **Warning**
+> This repository is no longer maintained. Please use the official python bindings for PocketSphinx: [github](https://github.com/cmusphinx/pocketsphinx), [pypi](https://pypi.org/project/pocketsphinx/).
+
 Pocketsphinx is a part of the [CMU Sphinx](http://cmusphinx.sourceforge.net) Open Source Toolkit For Speech Recognition.
 
 This package provides a python interface to CMU [Sphinxbase](https://github.com/cmusphinx/sphinxbase) and [Pocketsphinx](https://github.com/cmusphinx/pocketsphinx) libraries created with [SWIG](http://www.swig.org) and [Setuptools](https://setuptools.readthedocs.io).
