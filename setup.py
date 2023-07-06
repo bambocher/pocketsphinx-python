@@ -4,8 +4,6 @@ import sys
 from shutil import copy, copytree, ignore_patterns
 from glob import glob
 
-from distutils import log
-from distutils.command.build import build as _build
 try:
     from setuptools import setup, Extension
     from setuptools.command.install import install as _install
@@ -15,6 +13,9 @@ except ImportError:
     from distutils.extension import Extension
     from distutils.command.install import install as _install
     from distutils.command.bdist_egg import bdist_egg as _bdist_egg
+
+from distutils import log
+from distutils.command.build import build as _build
 
 if sys.platform.startswith('win'):
     from distutils.command.bdist_msi import bdist_msi as _bdist_msi
